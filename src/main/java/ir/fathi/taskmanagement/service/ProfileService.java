@@ -1,6 +1,5 @@
 package ir.fathi.taskmanagement.service;
 
-import ir.fathi.taskmanagement.dto.ProfileDto;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Profile;
 import ir.fathi.taskmanagement.repository.ProfileRepository;
