@@ -3,38 +3,41 @@ package ir.fathi.taskmanagement.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
-public class Role {
+
+public class UserRole {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
-    private String category;
-    @Column(nullable = false)
-    private String main;
 
+    @CreationTimestamp
+    private LocalDateTime creatOn;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<UserRole> userRoles;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "role_id",referencedColumnName = "id")
+    private Role role;
 
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "UserRole{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", category='" + category + '\'' +
-                ", main='" + main + '\'' +
-                ", userRoles=" + userRoles +
+                ", creatOn=" + creatOn +
+                ", user=" + user +
+                ", role=" + role +
                 '}';
     }
 
@@ -49,10 +52,12 @@ public class Role {
         }
 
         if (this.getId() != null) {
-            Role role = (Role) object;
-            return this.getId().equals(role.getId());
+            UserRole userRole = (UserRole) object;
+            return this.getId().equals(userRole.getId());
         } else {
             return false;
         }
+
+
     }
 }

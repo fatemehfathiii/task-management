@@ -42,6 +42,11 @@ public class Task {
     private String description;
 
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User owner;
+
+
     @Override
     public String toString() {
         return "Task{" +
@@ -55,6 +60,7 @@ public class Task {
                 ", deleteAt=" + deleteAt +
                 ", done=" + done +
                 ", description='" + description + '\'' +
+                ", owner=" + owner +
                 '}';
     }
 

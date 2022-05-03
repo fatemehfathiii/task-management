@@ -36,6 +36,10 @@ public class Profile {
     private boolean deleted;
 
 
+    @OneToOne(optional = false)
+    private User user;
+
+
     @Override
     public String toString() {
         return "Profile{" +
@@ -47,6 +51,7 @@ public class Profile {
                 ", mobileNumber='" + mobileNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", deleted=" + deleted +
+                ", user=" + user +
                 '}';
     }
 

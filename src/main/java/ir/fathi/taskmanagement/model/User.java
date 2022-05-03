@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Setter
@@ -22,6 +23,17 @@ public class User {
     private boolean locked;
     private boolean deleted;
 
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<UserRole> userRoles;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Profile profile;
+
+    @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Task> task;
+
+
     @Override
     public String toString() {
         return "User{" +
@@ -30,8 +42,12 @@ public class User {
                 ", password='" + password + '\'' +
                 ", locked=" + locked +
                 ", deleted=" + deleted +
+                ", userRoles=" + userRoles +
+                ", profile=" + profile +
+                ", task=" + task +
                 '}';
     }
+
 
     @Override
     public boolean equals(Object object) {
