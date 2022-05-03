@@ -18,8 +18,8 @@ public class TaskService {
     private final TaskRepository repository;
 
     @Transactional
-    public void save(PostTaskDto taskDto) {
-        repository.save(Task.fromDto(taskDto));
+    public void save(Task task) {
+        repository.save(task);
     }
 
     @Transactional(readOnly = true)

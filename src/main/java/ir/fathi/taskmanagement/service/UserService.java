@@ -17,8 +17,8 @@ public class UserService {
     private final UserRepository repository;
 
     @Transactional
-    public void save(PostUserDto postUserDto) {
-        repository.save(User.fromDto(postUserDto));
+    public void save(User user) {
+        repository.save(user);
     }
 
     public List<User> getAll() {

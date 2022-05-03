@@ -18,10 +18,9 @@ public class RoleService {
     private final RoleRepository repository;
 
     @Transactional
-    public void save(RoleDto roleDto){
-        repository.save(Role.fromDto(roleDto));
+    public void save(Role role){
+        repository.save(role);
     }
-
 
     public List<Role> getAll(){
         return (List<Role>) repository.findAll();

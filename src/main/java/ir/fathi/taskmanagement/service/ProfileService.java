@@ -18,8 +18,8 @@ public class ProfileService {
     private final ProfileRepository repository;
 
     @Transactional
-    public void save(ProfileDto profileDto){
-        repository.save(Profile.fromDto(profileDto));
+    public void save(Profile profile){
+        repository.save(profile);
     }
 
     public List<Profile> getAll(){
