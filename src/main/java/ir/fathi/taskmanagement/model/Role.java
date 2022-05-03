@@ -1,5 +1,6 @@
 package ir.fathi.taskmanagement.model;
 
+import ir.fathi.taskmanagement.dto.RoleDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,14 @@ public class Role {
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<UserRole> userRoles;
 
+
+    public static Role fromDto(RoleDto roleDto){
+        Role role=new Role();
+        role.setMain(roleDto.main());
+        role.setCategory(roleDto.category());
+        role.setName(roleDto.name());
+        return role;
+    }
 
     @Override
     public String toString() {

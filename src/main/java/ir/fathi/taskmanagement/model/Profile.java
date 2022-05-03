@@ -1,6 +1,7 @@
 package ir.fathi.taskmanagement.model;
 
 import ir.fathi.taskmanagement.Enum.Gender;
+import ir.fathi.taskmanagement.dto.ProfileDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,6 +39,18 @@ public class Profile {
 
     @OneToOne(optional = false)
     private User user;
+
+
+    public static Profile fromDto(ProfileDto profileDto){
+        Profile profile=new Profile();
+        profile.setName(profileDto.name());
+        profile.setLastname(profileDto.lastname());
+        profile.setGender(profileDto.gender());
+        profile.setBirthday(profileDto.birthday());
+        profile.setMobileNumber(profileDto.mobileNumber());
+        profile.setEmail(profileDto.email());
+        return profile;
+    }
 
 
     @Override

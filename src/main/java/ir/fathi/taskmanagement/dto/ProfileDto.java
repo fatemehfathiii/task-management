@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ir.fathi.taskmanagement.Enum.Gender;
 import ir.fathi.taskmanagement.customValidation.MobileNumber;
+import ir.fathi.taskmanagement.model.Profile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -39,4 +40,18 @@ public record ProfileDto(
         @Email
         @JsonProperty("email") String email
 ) {
+
+        public ProfileDto(String name, String lastname, Gender gender, Date birthday, String mobileNumber, String email) {
+                this.name = name;
+                this.lastname = lastname;
+                this.gender = gender;
+                this.birthday = birthday;
+                this.mobileNumber = mobileNumber;
+                this.email = email;
+        }
+
+        public static ProfileDto customProfile(Profile profile){
+                return new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender(),profile.getBirthday()
+                        ,profile.getMobileNumber(),profile.getEmail());
+        }
 }

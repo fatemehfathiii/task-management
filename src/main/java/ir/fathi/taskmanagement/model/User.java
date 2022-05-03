@@ -1,5 +1,6 @@
 package ir.fathi.taskmanagement.model;
 
+import ir.fathi.taskmanagement.dto.PostUserDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +33,15 @@ public class User {
 
     @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Task> task;
+
+
+
+    public static User fromDto(PostUserDto userDto){
+        User user=new User();
+        user.setUsername(userDto.username());
+        user.setPassword(userDto.password());
+        return user;
+    }
 
 
     @Override

@@ -2,6 +2,7 @@ package ir.fathi.taskmanagement.model;
 
 import ir.fathi.taskmanagement.Enum.TaskPriority;
 import ir.fathi.taskmanagement.Enum.TaskType;
+import ir.fathi.taskmanagement.dto.PostTaskDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,6 +46,24 @@ public class Task {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User owner;
+
+
+    public static Task fromDto(PostTaskDto taskDto) {
+        Task task = new Task();
+        task.setName(taskDto.name());
+        task.setType(taskDto.type());
+        task.setSubject(taskDto.subject());
+        task.setPriority(taskDto.priority());
+        task.setCreateAt(LocalDateTime.now());
+        task.setDescription(taskDto.description());
+        task.setOwner(taskDto.owner());
+        return task;
+    }
+
+    @PostUpdate
+    private void update(){
+        this.setUpdateAt(LocalDateTime.now());
+    }
 
 
     @Override
