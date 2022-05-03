@@ -33,12 +33,14 @@ public class UserRole {
 
     @Override
     public String toString() {
-        return "UserRole{" +
-                "id=" + id +
-                ", creatOn=" + creatOn +
-                ", user=" + user +
-                ", role=" + role +
-                '}';
+        return """
+                UserRole:{
+                id = id,
+                creatOn = createOn,
+                user = user,
+                role = role
+                }
+                """;
     }
 
     @Override

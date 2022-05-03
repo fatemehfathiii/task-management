@@ -44,7 +44,7 @@ public class Task {
 
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
 
 
@@ -61,26 +61,28 @@ public class Task {
     }
 
     @PostUpdate
-    private void update(){
+    private void update() {
         this.setUpdateAt(LocalDateTime.now());
     }
 
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", subject='" + subject + '\'' +
-                ", type=" + type +
-                ", priority=" + priority +
-                ", createAt=" + createAt +
-                ", updateAt=" + updateAt +
-                ", deleteAt=" + deleteAt +
-                ", done=" + done +
-                ", description='" + description + '\'' +
-                ", owner=" + owner +
-                '}';
+        return """
+                Task:{
+                id = id,
+                name = name,
+                subject = subject,
+                type = type,
+                priority = priority,
+                createAt = createAt,
+                updateAt = updateAt,
+                deleteAt = deleteAt,
+                done = done,
+                description = description,
+                owner = owner,
+                }
+                """;
     }
 
     @Override

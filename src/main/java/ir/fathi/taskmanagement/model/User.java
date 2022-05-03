@@ -25,19 +25,18 @@ public class User {
     private boolean deleted;
 
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<UserRole> userRoles;
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Profile profile;
 
-    @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> task;
 
 
-
-    public static User fromDto(PostUserDto userDto){
-        User user=new User();
+    public static User fromDto(PostUserDto userDto) {
+        User user = new User();
         user.setUsername(userDto.username());
         user.setPassword(userDto.password());
         return user;
@@ -46,16 +45,18 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", locked=" + locked +
-                ", deleted=" + deleted +
-                ", userRoles=" + userRoles +
-                ", profile=" + profile +
-                ", task=" + task +
-                '}';
+        return """
+                User:{
+                id = id,
+                username = username,
+                password = password,
+                locked = locked,
+                deleted = deleted,
+                userRoles = userRoles,
+                profile =  profile,
+                task = task
+                }
+                """;
     }
 
 

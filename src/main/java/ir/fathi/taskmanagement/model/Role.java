@@ -24,12 +24,12 @@ public class Role {
     private String main;
 
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserRole> userRoles;
 
 
-    public static Role fromDto(RoleDto roleDto){
-        Role role=new Role();
+    public static Role fromDto(RoleDto roleDto) {
+        Role role = new Role();
         role.setMain(roleDto.main());
         role.setCategory(roleDto.category());
         role.setName(roleDto.name());
@@ -38,13 +38,13 @@ public class Role {
 
     @Override
     public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", category='" + category + '\'' +
-                ", main='" + main + '\'' +
-                ", userRoles=" + userRoles +
-                '}';
+        return """
+                Role:{
+                main = main,
+                category = category,
+                name = name
+                }
+                """;
     }
 
     @Override

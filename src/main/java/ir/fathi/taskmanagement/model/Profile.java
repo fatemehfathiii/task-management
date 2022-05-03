@@ -41,8 +41,8 @@ public class Profile {
     private User user;
 
 
-    public static Profile fromDto(ProfileDto profileDto){
-        Profile profile=new Profile();
+    public static Profile fromDto(ProfileDto profileDto) {
+        Profile profile = new Profile();
         profile.setName(profileDto.name());
         profile.setLastname(profileDto.lastname());
         profile.setGender(profileDto.gender());
@@ -55,17 +55,19 @@ public class Profile {
 
     @Override
     public String toString() {
-        return "Profile{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", gender=" + gender +
-                ", birthday=" + birthday +
-                ", mobileNumber='" + mobileNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", deleted=" + deleted +
-                ", user=" + user +
-                '}';
+        return """
+                profile:{
+                id = id ,
+                name = name,
+                lastname = lastname,
+                gender = gender,
+                birthday = birthday,
+                mobileNumber = mobileNumber,
+                email = email,
+                deleted = deleted,
+                user = user,
+                }
+                """;
     }
 
     @Override
