@@ -42,7 +42,9 @@ public class RoleController {
     @ResponseBody
     @Validated
     public RoleDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-        return RoleDto.customRole(service.getById(id));
+        //I've used constructor for conversion
+        var role=service.getById(id);
+        return new RoleDto(role.getMain(),role.getCategory(),role.getName());
     }
 
     @PatchMapping("/{id}/{roleName}")
