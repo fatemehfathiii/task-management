@@ -30,9 +30,4 @@ public record RoleDto(
                 this.name = name;
         }
 
-
-        public static RoleDto customRole(Role role){
-                return new RoleDto(role.getMain(), role.getCategory(), role.getName());
-
-        }
 }

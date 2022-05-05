@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -30,9 +31,10 @@ public class UserController {
     @GetMapping
     @ResponseBody
     public List<GetUserDto> getAll(){
-        List<GetUserDto> customUser=new ArrayList<>();
-        service.getAll().forEach(u->customUser.add(GetUserDto.customUser(u)));
-        return customUser;
+        //I've used stream and map function for convert user into GetUserDto in this case
+       return service.getAll().stream()
+               .map(user -> new GetUserDto(user.getUsername()))
+               .collect(Collectors.toList());
     }
 
 

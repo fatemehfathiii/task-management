@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/role")
@@ -29,10 +30,13 @@ public class RoleController {
     @GetMapping
     @ResponseBody
     public List<RoleDto> getAll() {
-        List<RoleDto> customRole = new ArrayList<>();
-        service.getAll().forEach(role -> customRole.add(RoleDto.customRole(role)));
-        return customRole;
+
+        // I've used stream and map function for convert role into rolDto in this case
+        return service.getAll().stream()
+                .map(role -> new RoleDto(role.getMain(), role.getCategory(), role.getName()))
+                .collect(Collectors.toList());
     }
+
 
     @GetMapping("/{id}")
     @ResponseBody
