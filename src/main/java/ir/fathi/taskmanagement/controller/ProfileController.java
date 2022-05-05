@@ -39,6 +39,7 @@ public class ProfileController {
     @ResponseBody
     @Validated
     public ProfileDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
+        //I've used static method in this case
         return ProfileDto.customProfile(service.getById(id));
     }
 

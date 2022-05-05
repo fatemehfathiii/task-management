@@ -29,5 +29,4 @@ public record RoleDto(
                 this.category = category;
                 this.name = name;
         }
-
 }

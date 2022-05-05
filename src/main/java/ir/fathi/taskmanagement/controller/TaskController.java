@@ -37,8 +37,9 @@ public class TaskController {
 
     @GetMapping("/{id}")
     @Validated
-    public Task getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-        return service.getTaskById(id);
+    public GetTaskDto getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
+        //I've used static method in this case
+        return GetTaskDto.customTask(service.getTaskById(id));
     }
 
     @PatchMapping("/{id}")

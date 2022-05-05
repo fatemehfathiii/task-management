@@ -41,7 +41,8 @@ public class UserController {
     @GetMapping("/{id}")
     @ResponseBody
     public GetUserDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-        return GetUserDto.customUser(service.getById(id));
+        //I've used constructor for conversion
+        return new GetUserDto(service.getById(id).getUsername());
     }
 
 
