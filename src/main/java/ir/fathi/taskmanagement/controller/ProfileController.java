@@ -29,6 +29,7 @@ public class ProfileController {
     @GetMapping
     @ResponseBody
     public List<ProfileDto> getAll() {
+        //I've used a static method in dto and for each function for convert profile into profileDto
         List<ProfileDto> profileDto = new ArrayList<>();
         service.getAll().forEach(p -> profileDto.add(ProfileDto.customProfile(p)));
         return profileDto;

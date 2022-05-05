@@ -29,6 +29,7 @@ public class TaskController {
     @GetMapping
     @ResponseBody
     public List<GetTaskDto> getAllTask() {
+        //I've used a static method in dto and for each function for convert task into GetTaskDto
         List<GetTaskDto> customTask = new ArrayList<>();
         service.getAll().forEach(task -> customTask.add(GetTaskDto.customTask(task)));
         return customTask;
