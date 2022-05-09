@@ -11,4 +11,8 @@ public record GetUserDto(
         @JsonProperty("username")
         String username
 ) {
+
+        public GetUserDto(String username) {
+                this.username = username;
+        }
 }

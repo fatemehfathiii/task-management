@@ -1,5 +1,6 @@
 package ir.fathi.taskmanagement.dto;
 
+import ir.fathi.taskmanagement.exception.ConvertToDtoException;
 import ir.fathi.taskmanagement.model.Profile;
 import ir.fathi.taskmanagement.model.Role;
 import ir.fathi.taskmanagement.model.Task;
@@ -7,7 +8,7 @@ import ir.fathi.taskmanagement.model.User;
 
 public class ConvertToDto {
 
-    public static Object convertDto(Object obj){
+    public static Object convertDto(Object obj) throws ConvertToDtoException {
 
         if (obj instanceof User){
             return new GetUserDto(((User) obj).getUsername());
@@ -30,6 +31,6 @@ public class ConvertToDto {
                     ((Profile) obj).getBirthday(), ((Profile) obj).getMobileNumber(), ((Profile) obj).getEmail());
         }
 
-
+        throw new ConvertToDtoException(obj);
     }
 }

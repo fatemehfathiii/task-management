@@ -22,4 +22,10 @@ public record RoleDto(
         @JsonProperty("name")
         String name
 ) {
+
+        public RoleDto(String main, String category, String name) {
+                this.main = main;
+                this.category = category;
+                this.name = name;
+        }
 }
