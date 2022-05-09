@@ -43,4 +43,15 @@ public record GetTaskDto(
         @NotBlank
         @JsonProperty("owner") User owner
 ) {
+
+        public GetTaskDto(String name, List<TaskType> type, String subject,
+                          TaskPriority priority, LocalDateTime creatAt, String description, User owner) {
+                this.name = name;
+                this.type = type;
+                this.subject = subject;
+                this.priority = priority;
+                this.creatAt = creatAt;
+                this.description = description;
+                this.owner = owner;
+        }
 }

@@ -39,4 +39,14 @@ public record ProfileDto(
         @Email
         @JsonProperty("email") String email
 ) {
+
+        public ProfileDto(String name, String lastname, Gender gender, Date birthday,
+                          String mobileNumber, String email) {
+                this.name = name;
+                this.lastname = lastname;
+                this.gender = gender;
+                this.birthday = birthday;
+                this.mobileNumber = mobileNumber;
+                this.email = email;
+        }
 }
