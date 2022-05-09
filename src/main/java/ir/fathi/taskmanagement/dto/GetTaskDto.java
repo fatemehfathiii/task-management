@@ -45,7 +45,8 @@ public record GetTaskDto(
         @JsonProperty("owner") User owner
 ) {
 
-        public GetTaskDto(String name, List<TaskType> type, String subject, TaskPriority priority, LocalDateTime creatAt, String description, User owner) {
+        public GetTaskDto(String name, List<TaskType> type, String subject,
+                          TaskPriority priority, LocalDateTime creatAt, String description, User owner) {
                 this.name = name;
                 this.type = type;
                 this.subject = subject;
@@ -53,12 +54,5 @@ public record GetTaskDto(
                 this.creatAt = creatAt;
                 this.description = description;
                 this.owner = owner;
-        }
-
-        public static GetTaskDto customTask(Task task){
-
-                return new GetTaskDto(task.getName(),task.getType(), task.getSubject(), task.getPriority(),
-                        task.getCreateAt(), task.getDescription(), task.getOwner()) ;
-
         }
 }
