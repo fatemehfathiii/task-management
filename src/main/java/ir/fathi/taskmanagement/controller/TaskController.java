@@ -1,7 +1,9 @@
 package ir.fathi.taskmanagement.controller;
 
+import ir.fathi.taskmanagement.dto.ConvertToDto;
 import ir.fathi.taskmanagement.dto.GetTaskDto;
 import ir.fathi.taskmanagement.dto.PostTaskDto;
+import ir.fathi.taskmanagement.exception.ConvertToDtoException;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Task;
 import ir.fathi.taskmanagement.service.TaskService;
@@ -30,9 +32,9 @@ public class TaskController {
     @ResponseBody
     public List<GetTaskDto> getAllTask() {
         //I've used a static method in dto and for each function for convert task into GetTaskDto
-        List<GetTaskDto> customTask = new ArrayList<>();
-        service.getAll().forEach(task -> customTask.add(GetTaskDto.customTask(task)));
-        return customTask;
+        List<GetTaskDto> taskDto=
+        return service.getAll()
+                })
     }
 
     @GetMapping("/{id}")

@@ -55,4 +55,9 @@ public record GetTaskDto(
                 this.description = description;
                 this.owner = owner;
         }
+
+        public static GetTaskDto customTask(Task task){
+                return new GetTaskDto(task.getName(), task.getType(),task.getSubject(),
+                        task.getPriority(),task.getCreateAt(),task.getDescription(),task.getOwner());
+        }
 }

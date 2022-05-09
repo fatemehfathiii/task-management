@@ -10,16 +10,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ExceptionAdvice {
 
     @ExceptionHandler(RecordNotFoundException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String recordNotFoundHandler(RecordNotFoundException exception){
+    @ResponseBody
+    String recordNotFoundHandler(RecordNotFoundException exception) {
         return exception.getMessage();
     }
+
 
     @ExceptionHandler(ConvertToDtoException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public String convert(ConvertToDtoException exception){
-      return exception.getMessage();
+    public String convert(ConvertToDtoException exception) {
+        return exception.getMessage();
     }
 }
