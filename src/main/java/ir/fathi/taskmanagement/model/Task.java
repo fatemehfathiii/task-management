@@ -68,21 +68,9 @@ public class Task {
 
     @Override
     public String toString() {
-        return """
-                Task:{
-                id = id,
-                name = name,
-                subject = subject,
-                type = type,
-                priority = priority,
-                createAt = createAt,
-                updateAt = updateAt,
-                deleteAt = deleteAt,
-                done = done,
-                description = description,
-                owner = owner,
-                }
-                """;
+        return String.format("Task:{%n id= %d%n name= %s%n subject= %s%n type= %s%n " +
+                "priority= %s%n createAt= %t%n updateAt= %t%n deleteAt= %t%n done= %t%n description= %s%n }",
+                id,name,subject,type,priority,createAt,updateAt,deleteAt,done,description);
     }
 
     @Override

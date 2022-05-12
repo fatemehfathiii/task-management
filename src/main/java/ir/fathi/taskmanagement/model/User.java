@@ -45,18 +45,8 @@ public class User {
 
     @Override
     public String toString() {
-        return """
-                User:{
-                id = id,
-                username = username,
-                password = password,
-                locked = locked,
-                deleted = deleted,
-                userRoles = userRoles,
-                profile =  profile,
-                task = task
-                }
-                """;
+        return String.format("User:{ %nid= %d%n username= %s%n password=%s%n locked= %b%n deleted= %b%n }",
+                id,username,password,locked,deleted);
     }
 
 

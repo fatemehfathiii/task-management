@@ -1,9 +1,7 @@
 package ir.fathi.taskmanagement.controller;
 
-import ir.fathi.taskmanagement.dto.ConvertToDto;
 import ir.fathi.taskmanagement.dto.GetTaskDto;
 import ir.fathi.taskmanagement.dto.PostTaskDto;
-import ir.fathi.taskmanagement.exception.ConvertToDtoException;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Task;
 import ir.fathi.taskmanagement.service.TaskService;
@@ -15,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,10 +30,10 @@ public class TaskController {
     @GetMapping
     @ResponseBody
     public List<GetTaskDto> getAllTask() {
-        //I've used a static method in dto and for each function for convert task into GetTaskDto
-        List<GetTaskDto> taskDto=
-        return service.getAll()
-                })
+        //I've used a static method in dto
+        List<GetTaskDto> customTask = new ArrayList<>();
+        service.getAll().forEach(x -> customTask.add(GetTaskDto.customTask(x)));
+        return customTask;
     }
 
     @GetMapping("/{id}")
@@ -54,5 +53,7 @@ public class TaskController {
     public void delete(@PathVariable @Positive Integer id) throws RecordNotFoundException {
         service.delete(id);
     }
+
+
 
 }

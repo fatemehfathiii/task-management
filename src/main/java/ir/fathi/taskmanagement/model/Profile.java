@@ -55,20 +55,13 @@ public class Profile {
 
     @Override
     public String toString() {
-        return """
-                profile:{
-                id = id ,
-                name = name,
-                lastname = lastname,
-                gender = gender,
-                birthday = birthday,
-                mobileNumber = mobileNumber,
-                email = email,
-                deleted = deleted,
-                user = user,
-                }
-                """;
+
+        return String.format(
+                "Profile:{%n id= %d%n name= %s%n lastname= %s%n gender= %s%n birthday= %s%n " +
+                        "mobileNumber= %s%n email= %s%n deleted=%b%n}",
+                id,name,lastname,gender,birthday,mobileNumber,email,deleted);
     }
+
 
     @Override
     public boolean equals(Object object) {

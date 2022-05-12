@@ -1,6 +1,5 @@
 package ir.fathi.taskmanagement.service;
 
-import ir.fathi.taskmanagement.dto.PostUserDto;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.User;
 import ir.fathi.taskmanagement.repository.UserRepository;

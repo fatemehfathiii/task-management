@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @NoArgsConstructor
-
 public class UserRole {
 
     @Id
@@ -33,15 +32,9 @@ public class UserRole {
 
     @Override
     public String toString() {
-        return """
-                UserRole:{
-                id = id,
-                creatOn = createOn,
-                user = user,
-                role = role
-                }
-                """;
+        return String.format("UserRole:{ %nid= %d%n creatOn= %t%n }",id,creatOn);
     }
+
 
     @Override
     public boolean equals(Object object) {

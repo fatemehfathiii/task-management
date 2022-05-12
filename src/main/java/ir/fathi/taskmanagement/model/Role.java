@@ -38,14 +38,10 @@ public class Role {
 
     @Override
     public String toString() {
-        return """
-                Role:{
-                main = main,
-                category = category,
-                name = name
-                }
-                """;
+        return String.format("Role:{%n id= %d%n name= %s%n category= %s%n main= %s%n}",
+                id,name,category,main);
     }
+
 
     @Override
     public boolean equals(Object object) {
