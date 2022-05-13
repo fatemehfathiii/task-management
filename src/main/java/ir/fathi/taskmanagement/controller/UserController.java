@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -45,9 +46,13 @@ public class UserController {
 
 
     @PatchMapping("/{id}/{newPassword}")
-    public void updatePassword(@PathVariable @Positive Integer id, @PathVariable @NotBlank @NotNull @Min(8) String newPassword)
-            throws RecordNotFoundException {
-        service.updatePassword(id, newPassword);
+    public void updatePassword(@PathVariable @Positive Integer id, @RequestBody Map<String,String> newPassword)
+            throws RecordNotFoundException, IllegalAccessException {
+        var password=newPassword.get("password");
+        if (password== null || password.isBlank()){
+            throw new IllegalAccessException("password");
+        }
+        service.updatePassword(id,password);
     }
 
 

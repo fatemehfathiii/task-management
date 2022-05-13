@@ -7,11 +7,6 @@ public class MobileNumberValidator implements ConstraintValidator<MobileNumber,S
 
     @Override
     public boolean isValid(String mobileNumber, ConstraintValidatorContext constraintValidatorContext) {
-
-        if (!mobileNumber.startsWith("09") || !mobileNumber.startsWith("0098") || mobileNumber.startsWith("+98")){
-            return false;
-        }
-
-        return !mobileNumber.matches("[0-9]");
+        return !mobileNumber.matches("(\\+98|09|0098)[0-9]");
     }
 }

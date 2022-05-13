@@ -16,4 +16,10 @@ public class ExceptionAdvice {
         return exception.getMessage();
     }
 
+    @ExceptionHandler(InvalidInputException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    String invalidInput(InvalidInputException e) {
+        return e.getMessage();
+    }
 }
