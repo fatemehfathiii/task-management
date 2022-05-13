@@ -8,8 +8,6 @@ import javax.validation.constraints.NotNull;
 
 public record GetUserDto(
 
-        @NotNull
-        @NotBlank
         @JsonProperty("username")
         String username
 ) {

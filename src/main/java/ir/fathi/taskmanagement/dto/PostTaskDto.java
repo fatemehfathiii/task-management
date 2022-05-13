@@ -1,8 +1,8 @@
 package ir.fathi.taskmanagement.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ir.fathi.taskmanagement.Enum.TaskPriority;
-import ir.fathi.taskmanagement.Enum.TaskType;
+import ir.fathi.taskmanagement.enumType.TaskPriority;
+import ir.fathi.taskmanagement.enumType.TaskType;
 import ir.fathi.taskmanagement.model.User;
 
 import javax.validation.constraints.NotBlank;

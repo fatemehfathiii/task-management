@@ -1,4 +1,4 @@
-package ir.fathi.taskmanagement.Enum;
+package ir.fathi.taskmanagement.enumType;
 
 public enum TaskPriority {
 

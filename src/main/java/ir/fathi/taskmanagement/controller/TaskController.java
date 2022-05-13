@@ -14,6 +14,7 @@ import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,17 +31,18 @@ public class TaskController {
     @GetMapping
     @ResponseBody
     public List<GetTaskDto> getAllTask() {
-        //I've used a static method in dto
-        List<GetTaskDto> customTask = new ArrayList<>();
-        service.getAll().forEach(x -> customTask.add(GetTaskDto.customTask(x)));
-        return customTask;
+        return service.getAll().stream()
+                .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
+                        , task.getCreateAt(), task.getDescription(), task.getOwner()))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     @Validated
     public GetTaskDto getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-        //I've used static method in this case
-        return GetTaskDto.customTask(service.getTaskById(id));
+        var task=service.getTaskById(id);
+        return new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
+                , task.getCreateAt(), task.getDescription(), task.getOwner());
     }
 
     @PatchMapping("/{id}")
@@ -53,7 +55,6 @@ public class TaskController {
     public void delete(@PathVariable @Positive Integer id) throws RecordNotFoundException {
         service.delete(id);
     }
-
 
 
 }

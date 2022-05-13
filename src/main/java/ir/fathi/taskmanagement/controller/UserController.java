@@ -31,7 +31,6 @@ public class UserController {
     @GetMapping
     @ResponseBody
     public List<GetUserDto> getAll(){
-        //I've used stream and map function for convert user into GetUserDto in this case
        return service.getAll().stream()
                .map(user -> new GetUserDto(user.getUsername()))
                .collect(Collectors.toList());
@@ -41,7 +40,6 @@ public class UserController {
     @GetMapping("/{id}")
     @ResponseBody
     public GetUserDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-        //I've used constructor for conversion
         return new GetUserDto(service.getById(id).getUsername());
     }
 

@@ -12,6 +12,6 @@ public class MobileNumberValidator implements ConstraintValidator<MobileNumber,S
             return false;
         }
 
-        return mobileNumber.trim().length() == 11 && !mobileNumber.matches("[0-9]");
+        return !mobileNumber.matches("[0-9]");
     }
 }

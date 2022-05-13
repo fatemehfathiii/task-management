@@ -1,8 +1,6 @@
 package ir.fathi.taskmanagement.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ir.fathi.taskmanagement.model.Role;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 

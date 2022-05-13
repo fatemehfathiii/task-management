@@ -2,9 +2,8 @@ package ir.fathi.taskmanagement.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ir.fathi.taskmanagement.Enum.Gender;
+import ir.fathi.taskmanagement.enumType.Gender;
 import ir.fathi.taskmanagement.customValidation.MobileNumber;
-import ir.fathi.taskmanagement.model.Profile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

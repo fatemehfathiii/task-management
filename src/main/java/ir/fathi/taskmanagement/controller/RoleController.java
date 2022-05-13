@@ -22,16 +22,9 @@ import java.util.stream.Collectors;
 public class RoleController {
     private final RoleService service;
 
-    @PostMapping
-    public void save(@RequestBody @Valid RoleDto roleDto) {
-        service.save(Role.fromDto(roleDto));
-    }
-
     @GetMapping
     @ResponseBody
     public List<RoleDto> getAll() {
-
-        // I've used stream and map function for convert role into rolDto in this case
         return service.getAll().stream()
                 .map(role -> new RoleDto(role.getMain(), role.getCategory(), role.getName()))
                 .collect(Collectors.toList());
@@ -42,7 +35,6 @@ public class RoleController {
     @ResponseBody
     @Validated
     public RoleDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-        //I've used constructor for conversion
         var role=service.getById(id);
         return new RoleDto(role.getMain(),role.getCategory(),role.getName());
     }

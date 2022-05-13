@@ -1,11 +1,13 @@
 package ir.fathi.taskmanagement.model;
 
-import ir.fathi.taskmanagement.Enum.TaskPriority;
-import ir.fathi.taskmanagement.Enum.TaskType;
+import ir.fathi.taskmanagement.enumType.TaskPriority;
+import ir.fathi.taskmanagement.enumType.TaskType;
 import ir.fathi.taskmanagement.dto.PostTaskDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -35,7 +37,9 @@ public class Task {
     private TaskPriority priority;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDateTime createAt;
+    @UpdateTimestamp
     private LocalDateTime updateAt;
     private LocalDateTime deleteAt;
     private LocalDateTime done;
@@ -54,17 +58,10 @@ public class Task {
         task.setType(taskDto.type());
         task.setSubject(taskDto.subject());
         task.setPriority(taskDto.priority());
-        task.setCreateAt(LocalDateTime.now());
         task.setDescription(taskDto.description());
         task.setOwner(taskDto.owner());
         return task;
     }
-
-    @PostUpdate
-    private void update() {
-        this.setUpdateAt(LocalDateTime.now());
-    }
-
 
     @Override
     public String toString() {

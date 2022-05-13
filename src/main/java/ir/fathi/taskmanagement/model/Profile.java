@@ -1,6 +1,6 @@
 package ir.fathi.taskmanagement.model;
 
-import ir.fathi.taskmanagement.Enum.Gender;
+import ir.fathi.taskmanagement.enumType.Gender;
 import ir.fathi.taskmanagement.dto.ProfileDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class Profile {
     @Column(nullable = false, columnDefinition = "date")
     private Date birthday;
 
-    @Column(nullable = false, columnDefinition = "varchar(11)")
+    @Column(nullable = false)
     private String mobileNumber;
 
     private String email;

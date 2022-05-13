@@ -1,5 +1,4 @@
 package ir.fathi.taskmanagement.controller;
-
 import ir.fathi.taskmanagement.dto.ProfileDto;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Profile;
@@ -7,13 +6,12 @@ import ir.fathi.taskmanagement.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/profile")
@@ -29,18 +27,19 @@ public class ProfileController {
     @GetMapping
     @ResponseBody
     public List<ProfileDto> getAll() {
-        //I've used a static method in dto and for each function for convert profile into profileDto
-        List<ProfileDto> profileDto = new ArrayList<>();
-        service.getAll().forEach(p -> profileDto.add(ProfileDto.customProfile(p)));
-        return profileDto;
+        return service.getAll().stream()
+                .map(profile -> new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
+                        , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail()))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     @ResponseBody
     @Validated
     public ProfileDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-        //I've used static method in this case
-        return ProfileDto.customProfile(service.getById(id));
+       var profile=service.getById(id);
+       return new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
+                , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail());
     }
 
 

@@ -16,11 +16,4 @@ public class ExceptionAdvice {
         return exception.getMessage();
     }
 
-
-    @ExceptionHandler(ConvertToDtoException.class)
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public String convert(ConvertToDtoException exception) {
-        return exception.getMessage();
-    }
 }

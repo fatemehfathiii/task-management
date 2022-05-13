@@ -1,6 +1,5 @@
 package ir.fathi.taskmanagement.service;
 
-import ir.fathi.taskmanagement.dto.RoleDto;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Role;
 import ir.fathi.taskmanagement.repository.RoleRepository;
@@ -16,11 +15,6 @@ import java.util.List;
 public class RoleService {
 
     private final RoleRepository repository;
-
-    @Transactional
-    public void save(Role role){
-        repository.save(role);
-    }
 
     public List<Role> getAll(){
         return (List<Role>) repository.findAll();
