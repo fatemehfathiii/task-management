@@ -4,8 +4,13 @@ import ir.fathi.taskmanagement.dto.PostUserDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -13,7 +18,7 @@ import java.util.List;
 @Getter
 @Table(name = "app_user")
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -78,5 +83,31 @@ public class User {
         }
     }
 
+//********************************* custom user detail ************************************************
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        var authorities = new HashSet<GrantedAuthority>();
+        userRoles.forEach(userRole-> authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName())) );
+        return authorities;
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return !deleted;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return !deleted;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !deleted;
+    }
 }

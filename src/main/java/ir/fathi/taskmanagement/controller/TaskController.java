@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,9 +33,10 @@ public class TaskController {
     @ResponseBody
     public List<GetTaskDto> getAllTask() {
         //I've used a static method in dto and for each function for convert task into GetTaskDto
-        List<GetTaskDto> taskDto=
-        return service.getAll()
-                })
+        return service.getAll().stream()
+                .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(),
+                        task.getPriority(), task.getCreateAt(), task.getDescription(), task.getOwner()))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
