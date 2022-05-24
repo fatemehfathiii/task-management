@@ -47,7 +47,7 @@ public class Task {
     private String description;
 
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
 

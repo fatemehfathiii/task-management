@@ -10,7 +10,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -53,8 +55,12 @@ public class ProfileController {
 
     @DeleteMapping("/{id}")
     @Validated
-    public void delete(@PathVariable @Positive Integer id) throws RecordNotFoundException {
+    public Map<String,Boolean> delete(@PathVariable @Positive Integer id) throws RecordNotFoundException {
         service.delete(id);
+
+        Map<String,Boolean> response= new HashMap<>();
+        response.put("delete",Boolean.TRUE);
+        return response;
     }
 
 

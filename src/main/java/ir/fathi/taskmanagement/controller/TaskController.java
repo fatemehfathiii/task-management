@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class TaskController {
     @GetMapping("/{id}")
     @Validated
     public GetTaskDto getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-        var task=service.getTaskById(id);
+        var task = service.getTaskById(id);
         return new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                 , task.getCreateAt(), task.getDescription(), task.getOwner());
     }
@@ -52,8 +53,11 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @Positive Integer id) throws RecordNotFoundException {
+    public Map<String, Boolean> delete(@PathVariable @Positive Integer id) throws RecordNotFoundException {
         service.delete(id);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("delete", Boolean.TRUE);
+        return response;
     }
 
 

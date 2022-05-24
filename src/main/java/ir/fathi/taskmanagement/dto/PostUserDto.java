@@ -10,14 +10,14 @@ public record PostUserDto(
 
         @NotBlank
         @NotNull
-        @Min(6)
+        @Min(value = 6,message = "username must longer than 6 character ")
         @JsonProperty("username")
         String username,
 
 
         @NotNull
         @NotBlank
-        @Min(8)
+        @Min(value = 8 ,message = "password must longer than 8 character ")
         @JsonProperty("password")
         String password
 ) {

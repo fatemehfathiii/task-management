@@ -2,18 +2,18 @@ package ir.fathi.taskmanagement.controller;
 
 import ir.fathi.taskmanagement.dto.GetUserDto;
 import ir.fathi.taskmanagement.dto.PostUserDto;
+import ir.fathi.taskmanagement.exception.InvalidInputException;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.User;
 import ir.fathi.taskmanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,25 +40,31 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseBody
+    @Validated
     public GetUserDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
         return new GetUserDto(service.getById(id).getUsername());
     }
 
 
-    @PatchMapping("/{id}/{newPassword}")
+    @PatchMapping("/{id}")
+    @Validated
     public void updatePassword(@PathVariable @Positive Integer id, @RequestBody Map<String,String> newPassword)
-            throws RecordNotFoundException, IllegalAccessException {
+            throws RecordNotFoundException, InvalidInputException {
         var password=newPassword.get("password");
-        if (password== null || password.isBlank()){
-            throw new IllegalAccessException("password");
+        if (password== null || password.isBlank() || password.length()<8){
+            throw new InvalidInputException("password");
         }
         service.updatePassword(id,password);
     }
 
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @Positive Integer id) throws RecordNotFoundException {
+    @Validated
+    public Map<String,Boolean> delete(@PathVariable @Positive Integer id) throws RecordNotFoundException {
         service.delete(id);
+        Map<String,Boolean> response = new HashMap<>();
+        response.put("delete",Boolean.TRUE);
+        return response;
     }
 
 }

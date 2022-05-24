@@ -1,6 +1,7 @@
 package ir.fathi.taskmanagement.controller;
 
 import ir.fathi.taskmanagement.dto.RoleDto;
+import ir.fathi.taskmanagement.exception.InvalidInputException;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Role;
 import ir.fathi.taskmanagement.service.RoleService;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,9 +41,15 @@ public class RoleController {
         return new RoleDto(role.getMain(),role.getCategory(),role.getName());
     }
 
-    @PatchMapping("/{id}/{roleName}")
+    @PatchMapping("/{id}")
     @Validated
-    public void updateRoleName(@PathVariable @Positive Integer id, @PathVariable @NotNull @NotBlank String roleName) throws RecordNotFoundException {
-        service.updateRoleName(id, roleName);
+    public void updateRoleName(@PathVariable @Positive Integer id, @RequestBody Map<String,String> roleName)
+            throws InvalidInputException,RecordNotFoundException{
+        var newRoleName=roleName.get("roleName");
+        if ( newRoleName == null|| newRoleName.isBlank()){
+            throw new InvalidInputException("roleName");
+        }
+        service.updateRoleName(id,newRoleName);
     }
+
 }
