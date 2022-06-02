@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService service;
 
-    @PostMapping
+    @PostMapping("/post")
     public void save(@RequestBody @Valid PostUserDto postUserDto){
         service.save(User.fromDto(postUserDto));
     }
