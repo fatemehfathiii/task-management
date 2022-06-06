@@ -29,17 +29,17 @@ public class ProfileService {
         return repository.findById(id).orElseThrow(RecordNotFoundException::new);
     }
 
+    public Profile getProfileByUsername(String username) throws RecordNotFoundException {
+        return repository.findProfileByUsername(username).orElseThrow(RecordNotFoundException::new);
+    }
+
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void updateName(Integer id,String name) throws RecordNotFoundException {
-        var profile=repository.findById(id).orElseThrow((RecordNotFoundException::new));
-        profile.setName(name);
-        repository.save(profile);
+    public Integer updateNameAndLastname(Integer id,String name,String lastname) {
+     return repository.updateNameAndLastname(id, name, lastname);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ  )
-    public void delete(Integer id) throws RecordNotFoundException {
-        var profile=repository.findById(id).orElseThrow((RecordNotFoundException::new));
-        profile.setDeleted(true);
-        repository.save(profile);
+    public Integer delete(Integer id){
+      return repository.delete(id);
     }
 }

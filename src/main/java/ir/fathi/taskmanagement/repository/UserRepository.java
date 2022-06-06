@@ -1,9 +1,33 @@
 package ir.fathi.taskmanagement.repository;
-
 import ir.fathi.taskmanagement.model.User;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-@ResponseBody
+import java.util.List;
+
+
+@Repository
 public interface UserRepository extends CrudRepository<User,Integer> {
+
+
+    @Query(value = "select count(u.username) from app_user u where u.deleted=false",nativeQuery = true)
+    int countOfActiveUser();
+
+
+    @Query(value = "select distinct u.username from user u inner join task t on u.id=t.user_id where u.deleted=false and t.done IS  NULL" ,
+            nativeQuery = true)
+    List<String> userWhoDidNotDoTask();
+
+    @Modifying()
+    @Query(value = "update User set password= :newPassword where id= :id")
+    Integer updatePassword(@Param("id") Integer id , @Param("newPassword") String password);
+
+    @Modifying
+    @Query(value = "update User set deleted = true  where id= :id")
+    Integer delete(@Param("id") Integer id);
+
+
 }

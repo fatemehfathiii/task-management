@@ -22,20 +22,19 @@ public record GetTaskDto(
         @JsonFormat(pattern = "yyyy/mm/dd")
         @JsonProperty("createAt") LocalDateTime creatAt,
 
-        @JsonProperty("description") String description,
+        @JsonProperty("description") String description
 
-        @JsonProperty("owner") User owner
 ) {
 
         public GetTaskDto(String name, List<TaskType> type, String subject,
-                          TaskPriority priority, LocalDateTime creatAt, String description, User owner) {
+                          TaskPriority priority, LocalDateTime creatAt, String description) {
                 this.name = name;
                 this.type = type;
                 this.subject = subject;
                 this.priority = priority;
                 this.creatAt = creatAt;
                 this.description = description;
-                this.owner = owner;
+
         }
 
 }

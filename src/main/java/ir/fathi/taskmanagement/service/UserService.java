@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository repository;
 
@@ -26,20 +27,25 @@ public class UserService {
 
     public User getById(Integer id) throws RecordNotFoundException {
         return repository.findById(id).orElseThrow(RecordNotFoundException::new);
-
-    }
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void updatePassword(Integer id, String newPassword) throws RecordNotFoundException {
-        var user = repository.findById(id).orElseThrow(RecordNotFoundException::new);
-        user.setPassword(newPassword);
-        repository.save(user);
     }
 
+    public List<String> getUserWhoHaveIncompleteTask(){
+        return repository.userWhoDidNotDoTask();
+    }
+
+
+    public int countOfActiveUser(){
+        return repository.countOfActiveUser();
+    }
+
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void delete(Integer id) throws RecordNotFoundException {
-        var user = repository.findById(id).orElseThrow(RecordNotFoundException::new);
-        user.setDeleted(true);
-        repository.save(user);
+    public Integer updatePassword(Integer id, String newPassword){
+       return repository.updatePassword(id, newPassword);
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public Integer delete(Integer id){
+        return repository.delete(id);
     }
 
 }
