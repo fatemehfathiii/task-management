@@ -32,17 +32,11 @@ public class RoleController {
     @GetMapping("/get/{id}")
     @ResponseBody
     @Validated
-    public ResponseEntity<Object> getById(@PathVariable @Positive Integer id) {
-
-        try{
+    public RoleDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
             var role=service.getById(id);
-            return ResponseEntity.ok().body(new RoleDto(role.getMain(),role.getCategory(),role.getName()));
-
-        }catch (RecordNotFoundException exception){
-
-            return new ResponseEntity<>("role not found" , HttpStatus.NOT_FOUND);
-        }
+            return new RoleDto(role.getMain(),role.getCategory(),role.getName());
     }
+
 
     @PatchMapping("/update/{id}")
     @Validated

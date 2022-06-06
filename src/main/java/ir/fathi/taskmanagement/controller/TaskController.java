@@ -48,17 +48,11 @@ public class TaskController {
     @GetMapping("/get/{id}")
     @ResponseBody
     @Validated
-    public ResponseEntity<Object> getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-        try {
+    public GetTaskDto getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
 
             var task = service.getTaskById(id);
-            return ResponseEntity.ok().body(new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
-                    , task.getCreateAt(), task.getDescription()));
-
-        }catch (RecordNotFoundException exception){
-            return new ResponseEntity<>("task not found" , HttpStatus.NOT_FOUND);
-
-        }
+            return new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
+                    , task.getCreateAt(), task.getDescription());
     }
 
 

@@ -39,17 +39,10 @@ public class ProfileController {
     @GetMapping("/get/{id}")
     @ResponseBody
     @Validated
-    public ResponseEntity<Object> getById(@PathVariable @Positive Integer id){
-        try{
-
+    public ProfileDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
             var profile=service.getById(id);
-            return ResponseEntity.ok().body( new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
-                    , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail()));
-
-        }catch (RecordNotFoundException exception){
-            return new ResponseEntity<>("item not found",HttpStatus.NOT_FOUND);
-        }
-
+            return new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
+                    , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail());
     }
 
 
@@ -57,16 +50,11 @@ public class ProfileController {
     @GetMapping("/get/byUsername")
     @ResponseBody
     @Validated
-    public ResponseEntity<Object> etProfileByUsername(@RequestParam @NotBlank String username){
-        try{
-
+    public ProfileDto etProfileByUsername(@RequestParam @NotBlank String username) throws RecordNotFoundException {
             var profile=service.getProfileByUsername(username);
-            return ResponseEntity.ok().body(new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
-                    , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail()));
+            return new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
+                    , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail());
 
-        }catch (RecordNotFoundException exception){
-            return new ResponseEntity<>("invalid username",HttpStatus.NOT_FOUND);
-        }
     }
 
 

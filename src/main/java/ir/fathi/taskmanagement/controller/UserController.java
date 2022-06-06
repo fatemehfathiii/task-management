@@ -43,14 +43,8 @@ public class UserController {
     @GetMapping("/get/{id}")
     @ResponseBody
     @Validated
-    public ResponseEntity<Object> getById(@PathVariable @Positive Integer id) {
-        try {
-
-            return ResponseEntity.ok().body(new GetUserDto(service.getById(id).getUsername()));
-
-        }catch (RecordNotFoundException exception){
-            return new ResponseEntity<>("user not found",HttpStatus.NOT_FOUND);
-        }
+    public GetUserDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
+            return new GetUserDto(service.getById(id).getUsername());
     }
 
     @GetMapping("/get/incomplete")
