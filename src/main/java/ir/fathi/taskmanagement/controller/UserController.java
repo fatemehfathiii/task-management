@@ -1,5 +1,6 @@
 package ir.fathi.taskmanagement.controller;
 
+import ir.fathi.taskmanagement.config.aspect.MethodDurationLog;
 import ir.fathi.taskmanagement.dto.GetUserDto;
 import ir.fathi.taskmanagement.dto.PostUserDto;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
@@ -34,6 +35,7 @@ public class UserController {
 
     @GetMapping("/getAll")
     @Secured("ROLE_GET_USER")
+    @MethodDurationLog
     @ResponseBody
     public List<GetUserDto> getAll(){
        return service.getAll().stream()
@@ -60,6 +62,7 @@ public class UserController {
     @GetMapping("/count")
     @Secured("ROLE_GET_USER")
     @ResponseBody
+    @MethodDurationLog
     public ResponseEntity<String> countOfActiveUser(){
         return new ResponseEntity<>(service.countOfActiveUser()+"users are active",HttpStatus.OK);
     }
@@ -68,6 +71,7 @@ public class UserController {
     @Secured("ROLE_UPDATE_USER")
     @Validated
     @ResponseBody
+    @MethodDurationLog
     public ResponseEntity<String> updatePassword(@PathVariable @Positive Integer id,
                                                  @RequestParam(name = "password") @NotBlank @Min(8) String newPassword) {
         return new ResponseEntity<>(service.updatePassword(id, newPassword)+"record updated.", HttpStatus.OK);
@@ -77,6 +81,7 @@ public class UserController {
     @Secured("ROLE_DELETE_USER")
     @Validated
     @ResponseBody
+    @MethodDurationLog
     public Map<String,Boolean> delete(@PathVariable @Positive Integer id){
         service.delete(id);
         Map<String,Boolean> response = new HashMap<>();

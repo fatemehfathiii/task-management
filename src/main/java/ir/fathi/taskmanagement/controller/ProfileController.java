@@ -1,4 +1,5 @@
 package ir.fathi.taskmanagement.controller;
+import ir.fathi.taskmanagement.config.aspect.MethodDurationLog;
 import ir.fathi.taskmanagement.dto.ProfileDto;
 import ir.fathi.taskmanagement.dto.UpdateProfileDto;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
@@ -32,6 +33,7 @@ public class ProfileController {
     @GetMapping("/getAll")
     @Secured("ROLE_GET_PROFILE")
     @ResponseBody
+    @MethodDurationLog
     public List<ProfileDto> getAll() {
         return service.getAll().stream()
                 .map(profile -> new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
@@ -79,6 +81,7 @@ public class ProfileController {
     @Secured("ROLE_DELETE_PROFILE")
     @Validated
     @ResponseBody
+    @MethodDurationLog
     public ResponseEntity<String> delete(@PathVariable @Positive Integer id){
         return new ResponseEntity<>(service.delete(id)+"record deleted.",HttpStatus.OK);
     }

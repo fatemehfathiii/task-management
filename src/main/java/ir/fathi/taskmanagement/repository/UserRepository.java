@@ -10,8 +10,6 @@ import java.util.List;
 
 import java.util.Optional;
 
-@ResponseBody
-
 @Repository
 public interface UserRepository extends CrudRepository<User,Integer> {
 
@@ -23,7 +21,7 @@ public interface UserRepository extends CrudRepository<User,Integer> {
     int countOfActiveUser();
 
 
-    @Query(value = "select distinct u.username from user u inner join task t on u.id=t.user_id where u.deleted=false and t.done IS  NULL" ,
+    @Query(value = "select distinct u.username from app_user u inner join task t on u.id=t.user_id where u.deleted=false and t.done IS  NULL" ,
             nativeQuery = true)
     List<String> userWhoDidNotDoTask();
 

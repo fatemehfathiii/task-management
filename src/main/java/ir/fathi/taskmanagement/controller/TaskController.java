@@ -1,5 +1,6 @@
 package ir.fathi.taskmanagement.controller;
 
+import ir.fathi.taskmanagement.config.aspect.MethodDurationLog;
 import ir.fathi.taskmanagement.dto.GetTaskDto;
 import ir.fathi.taskmanagement.dto.PostTaskDto;
 import ir.fathi.taskmanagement.enumType.TaskPriority;
@@ -109,6 +110,7 @@ public class TaskController {
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
+    @MethodDurationLog
     public List<GetTaskDto> getTaskByPriorityAndUsername(@RequestBody  Map<@NotBlank @NotNull String,@NotNull Object> items){
 
             return service.getTaskByPriorityAndUsername((String) items.get("name"),(TaskPriority) items.get("priority")).stream()
@@ -122,6 +124,7 @@ public class TaskController {
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
+    @MethodDurationLog
     public List<GetTaskDto> getTaskByNameOfPerson(@RequestBody @Valid Map< @NotBlank String, @NotBlank @NotNull String> items){
         return service.getTaskByNameOfPerson(items.get("name"),items.get("lastname")).stream()
                 .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
