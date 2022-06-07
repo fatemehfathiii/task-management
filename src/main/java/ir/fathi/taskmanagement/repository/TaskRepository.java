@@ -22,12 +22,12 @@ public interface TaskRepository extends CrudRepository<Task,Integer> {
     List<Task> findTaskByOwner_UsernameAndPriority(String username , TaskPriority priority);
 
 
-    @Query(value = "select * from user u inner join task t on u.id=t.user_id where u.username= :username and t.done=current_date",
+    @Query(value = "select * from task t inner join user u on u.id=t.user_id where u.username= :username and t.done=current_date",
             nativeQuery = true)
     List<Task> findTaskByOwner_UsernameAndDoneToday(@Param("username") String username);
 
-    @Query(value = "select * from Task t inner join user u on u.id=t.user_id where u.username=" +
-            "(select u.username from user u inner join profile p on u.id=p.user_id where p.name= : name and p.lastname= :lastname)",
+    @Query(value = "select * from task t inner join user u on u.id=t.user-id inner join profile p on u.id=p.user_id " +
+            "where p.name= :name and p.lastname= :lastname",
             nativeQuery = true)
     List<Task> findTaskByNameOfPerson(@Param("name") String name ,@Param("lastname") String lastname);
 
