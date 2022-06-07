@@ -20,4 +20,14 @@ ResponseEntity<ExceptionResponse> recordNotFoundException(RecordNotFoundExceptio
     return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
 
   }
+
+
+  @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
+    ResponseEntity<ExceptionResponse> exception(Exception exception,WebRequest webRequest){
+    ExceptionResponse exceptionResponse=new ExceptionResponse(
+            exception.getMessage(),webRequest.getDescription(false),new Date()
+    );
+
+    return new ResponseEntity<>(exceptionResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }
