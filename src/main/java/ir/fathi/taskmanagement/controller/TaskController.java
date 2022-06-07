@@ -9,6 +9,7 @@ import ir.fathi.taskmanagement.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,12 +32,14 @@ public class TaskController {
 
 
     @PostMapping
+    @Secured("ROLE_ADD_TASK")
     public ResponseEntity<String> save(@RequestBody @Valid PostTaskDto taskDto) {
         service.save(Task.fromDto(taskDto));
         return new ResponseEntity<>("save success",HttpStatus.CREATED);
     }
 
     @GetMapping("/getAll")
+    @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getAllTask() {
         return service.getAll().stream()
@@ -47,6 +50,7 @@ public class TaskController {
 
 
     @GetMapping("/get/{id}")
+    @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
     public GetTaskDto getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
@@ -58,6 +62,7 @@ public class TaskController {
 
 
     @GetMapping("/get/byUsername")
+    @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
     public List<GetTaskDto> getTaskByUsername(@RequestParam(name = "username") @NotBlank String username) {
@@ -68,6 +73,7 @@ public class TaskController {
     }
 
     @GetMapping("/get/incomplete")
+    @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
     public List<GetTaskDto> getIncompleteTaskByUsername(@RequestParam(name = "username") @NotBlank String username){
@@ -78,6 +84,7 @@ public class TaskController {
     }
 
     @GetMapping("/get/complete")
+    @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
     public List<GetTaskDto> getCompleteTaskByUsername(@RequestParam(name = "username") @NotBlank String username){
@@ -88,6 +95,7 @@ public class TaskController {
     }
 
     @GetMapping("/get/today/complete")
+    @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
     public List<GetTaskDto> getTodayCompleteTask(@RequestParam(name = "username") @NotBlank String username){
@@ -98,6 +106,7 @@ public class TaskController {
     }
 
     @GetMapping("/get/byPriority")
+    @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
     public List<GetTaskDto> getTaskByPriorityAndUsername(@RequestBody  Map<@NotBlank @NotNull String,@NotNull Object> items){
@@ -110,6 +119,7 @@ public class TaskController {
     }
 
     @GetMapping("/get/byName")
+    @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
     public List<GetTaskDto> getTaskByNameOfPerson(@RequestBody @Valid Map< @NotBlank String, @NotBlank @NotNull String> items){
@@ -121,6 +131,7 @@ public class TaskController {
 
 
     @PatchMapping("/update/{id}")
+    @Secured("ROLE_UPDATE_TASK")
     @Validated
     @ResponseBody
     public ResponseEntity<String> updateTimeToDo(@PathVariable @Positive Integer id) {
@@ -128,6 +139,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @Secured("ROLE_DELETE_TASK")
     @ResponseBody
     public ResponseEntity<String> delete(@PathVariable @Positive Integer id) {
         service.delete(id);

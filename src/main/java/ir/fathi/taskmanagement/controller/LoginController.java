@@ -19,28 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/authenticate")
 @RequiredArgsConstructor
 public class LoginController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
 
 
-    @PostMapping
-    public ResponseEntity<Object> login(@RequestBody @Valid PostUserDto request){
+    @PostMapping("/signIn")
+    public ResponseEntity<Object> login(@RequestBody @Valid PostUserDto request) {
 
-        try {
-            Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(request.username(),request.password()));
-            User user= (User) authentication.getPrincipal();
-            return ResponseEntity.accepted().body(jwtTokenUtil.generateAccessToken(user));
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
 
-        }catch (BadCredentialsException exception){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
+        return ResponseEntity.accepted().body(jwtTokenUtil.generateAccessToken((User) authentication.getPrincipal()));
 
     }
-
 
 }

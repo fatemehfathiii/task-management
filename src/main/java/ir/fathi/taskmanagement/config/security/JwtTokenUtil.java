@@ -46,7 +46,8 @@ public class JwtTokenUtil {
 
 
     public boolean validate(String token){
-        Logger logger=Logger.getLogger(JwtTokenUtil.class.getName());
+
+        Logger logger = Logger.getLogger(JwtTokenUtil.class.getName());
 
         try {
             Jwts.parser().setSigningKey(jwtKey).parseClaimsJws(token);

@@ -8,6 +8,7 @@ import ir.fathi.taskmanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +33,9 @@ public class UserController {
 
 
     @GetMapping("/getAll")
+    @Secured("ROLE_GET_USER")
     @ResponseBody
     public List<GetUserDto> getAll(){
-        //I've used stream and map function for convert user into GetUserDto in this case
        return service.getAll().stream()
                .map(user -> new GetUserDto(user.getUsername()))
                .collect(Collectors.toList());
@@ -42,6 +43,7 @@ public class UserController {
 
 
     @GetMapping("/get/{id}")
+    @Secured("ROLE_GET_USER")
     @ResponseBody
     @Validated
     public GetUserDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
@@ -49,18 +51,21 @@ public class UserController {
     }
 
     @GetMapping("/get/incomplete")
+    @Secured("ROLE_GET_USER")
     @ResponseBody
     public List<String> getUserWhoHaveIncompleteTask(){
         return service.getUserWhoHaveIncompleteTask();
     }
 
-    @GetMapping
+    @GetMapping("/count")
+    @Secured("ROLE_GET_USER")
     @ResponseBody
     public ResponseEntity<String> countOfActiveUser(){
         return new ResponseEntity<>(service.countOfActiveUser()+"users are active",HttpStatus.OK);
     }
 
     @PatchMapping("/update/{id}")
+    @Secured("ROLE_UPDATE_USER")
     @Validated
     @ResponseBody
     public ResponseEntity<String> updatePassword(@PathVariable @Positive Integer id,
@@ -69,6 +74,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @Secured("ROLE_DELETE_USER")
     @Validated
     @ResponseBody
     public Map<String,Boolean> delete(@PathVariable @Positive Integer id){

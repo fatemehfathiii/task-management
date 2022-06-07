@@ -7,6 +7,7 @@ import ir.fathi.taskmanagement.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -22,12 +23,14 @@ public class ProfileController {
     private final ProfileService service;
 
     @PostMapping
+    @Secured("ROLE_ADD_PROFILE")
     public ResponseEntity save(@RequestBody @Valid ProfileDto profileDto) {
         service.save(Profile.fromDto(profileDto));
         return new ResponseEntity<>("save successes",HttpStatus.CREATED);
     }
 
     @GetMapping("/getAll")
+    @Secured("ROLE_GET_PROFILE")
     @ResponseBody
     public List<ProfileDto> getAll() {
         return service.getAll().stream()
@@ -37,6 +40,7 @@ public class ProfileController {
     }
 
     @GetMapping("/get/{id}")
+    @Secured("ROLE_GET_PROFILE")
     @ResponseBody
     @Validated
     public ProfileDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
@@ -48,6 +52,7 @@ public class ProfileController {
 
 
     @GetMapping("/get/byUsername")
+    @Secured("ROLE_GET_PROFILE")
     @ResponseBody
     @Validated
     public ProfileDto etProfileByUsername(@RequestParam @NotBlank String username) throws RecordNotFoundException {
@@ -60,6 +65,7 @@ public class ProfileController {
 
 
     @PatchMapping("/update/byName")
+    @Secured(("ROLE_UPDATE_PROFILE"))
     @ResponseBody
     public ResponseEntity<String> updateNameAndLastname(@RequestBody @Valid UpdateProfileDto profileDto){
         return new ResponseEntity<>(
@@ -70,6 +76,7 @@ public class ProfileController {
 
 
     @DeleteMapping("/delete/{id}")
+    @Secured("ROLE_DELETE_PROFILE")
     @Validated
     @ResponseBody
     public ResponseEntity<String> delete(@PathVariable @Positive Integer id){
