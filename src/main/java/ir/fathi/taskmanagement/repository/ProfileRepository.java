@@ -17,13 +17,12 @@ public interface ProfileRepository extends CrudRepository<Profile,Integer> {
     Optional<Profile> findProfileByUsername(@Param("username") String username);
 
 
-    @Modifying(flushAutomatically = true)
+    @Modifying
     @Query(value = "update Profile set name= :name ,lastname= :lastname where id= :id")
     Integer updateNameAndLastname(@Param("id") Integer id,@Param("name") String name,@Param("lastName") String lastname);
 
-    @Modifying
-    @Query(value = "update Profile set deleted=true where id= :id")
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update Profile set deleted=true where deleted=false  and id= :id")
     Integer delete(@Param("id") Integer id);
-
 
 }

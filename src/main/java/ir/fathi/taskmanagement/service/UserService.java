@@ -34,14 +34,17 @@ public class UserService {
     }
 
 
+    @Transactional(readOnly = true,isolation = Isolation.SERIALIZABLE)
     public int countOfActiveUser(){
         return repository.countOfActiveUser();
     }
+
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Integer updatePassword(Integer id, String newPassword){
        return repository.updatePassword(id, newPassword);
     }
+
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Integer delete(Integer id){

@@ -17,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TaskService {
     private final TaskRepository repository;
 
@@ -25,11 +26,13 @@ public class TaskService {
         repository.save(task);
     }
 
-    @Transactional(readOnly = true)
     public List<Task> getAll() {
         return (List<Task>) repository.findAll();
     }
 
+    public Task getTaskById(Integer id) throws RecordNotFoundException {
+        return repository.findById(id).orElseThrow(RecordNotFoundException::new);
+    }
 
     public List<Task> getTaskByUsername(String username){
         return repository.findTaskByOwner_Username(username);
@@ -51,15 +54,9 @@ public class TaskService {
         return repository.findTaskByOwner_UsernameAndPriority(username,priority);
     }
 
-
+    @Transactional(isolation = Isolation.REPEATABLE_READ,readOnly = true)
     public List<Task> getTaskByNameOfPerson(String name ,String lastname){
         return repository.findTaskByNameOfPerson(name, lastname);
-    }
-
-
-    @Transactional(readOnly = true)
-    public Task getTaskById(Integer id) throws RecordNotFoundException {
-        return repository.findById(id).orElseThrow(RecordNotFoundException::new);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -72,6 +69,5 @@ public class TaskService {
     public Integer delete (Integer id){
        return repository.delete(id);
     }
-
 
 }

@@ -21,13 +21,14 @@ public interface UserRepository extends CrudRepository<User,Integer> {
             nativeQuery = true)
     List<String> userWhoDidNotDoTask();
 
-    @Modifying()
+
+    @Modifying
     @Query(value = "update User set password= :newPassword where id= :id")
     Integer updatePassword(@Param("id") Integer id , @Param("newPassword") String password);
 
-    @Modifying
-    @Query(value = "update User set deleted = true  where id= :id")
-    Integer delete(@Param("id") Integer id);
 
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update User u set u.deleted = true  where u.deleted=false and u.id= :id")
+    Integer delete(@Param("id") Integer id);
 
 }

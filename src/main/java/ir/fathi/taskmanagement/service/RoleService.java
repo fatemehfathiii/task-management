@@ -12,8 +12,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RoleService {
-
     private final RoleRepository repository;
 
     public List<Role> getAll(){

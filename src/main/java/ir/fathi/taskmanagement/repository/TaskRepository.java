@@ -32,13 +32,13 @@ public interface TaskRepository extends CrudRepository<Task,Integer> {
     List<Task> findTaskByNameOfPerson(@Param("name") String name ,@Param("lastname") String lastname);
 
 
-    @Modifying
-    @Query(value = "update Task set done = current_timestamp where id= :id")
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update Task set done = current_timestamp where done is  null and id= :id")
     Integer updateTimeToDo(@Param("id") Integer id);
 
 
-    @Modifying
-    @Query(value = "update Task set deleteAt = current_timestamp where id= :id")
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update Task set deleteAt = current_timestamp where deleteAt is null and id= :id")
     Integer delete(@Param("id") Integer id);
 
 }
