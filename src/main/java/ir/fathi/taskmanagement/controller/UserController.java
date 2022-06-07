@@ -34,6 +34,7 @@ public class UserController {
     @GetMapping("/getAll")
     @ResponseBody
     public List<GetUserDto> getAll(){
+        //I've used stream and map function for convert user into GetUserDto in this case
        return service.getAll().stream()
                .map(user -> new GetUserDto(user.getUsername()))
                .collect(Collectors.toList());

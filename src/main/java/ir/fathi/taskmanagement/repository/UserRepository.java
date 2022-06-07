@@ -8,9 +8,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import java.util.Optional;
+
+@ResponseBody
 
 @Repository
 public interface UserRepository extends CrudRepository<User,Integer> {
+
+    Optional<User> findUserByUsernameAndDeletedFalse(String username);
+
 
 
     @Query(value = "select count(u.username) from app_user u where u.deleted=false",nativeQuery = true)
