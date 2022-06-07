@@ -24,6 +24,7 @@ public class Profile {
     private String lastname;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Gender gender;
 
     @Column(nullable = false, columnDefinition = "date")
@@ -32,6 +33,7 @@ public class Profile {
     @Column(nullable = false)
     private String mobileNumber;
 
+    @Column(unique = true)
     private String email;
 
     private boolean deleted;

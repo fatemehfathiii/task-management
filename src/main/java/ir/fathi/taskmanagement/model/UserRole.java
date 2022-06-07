@@ -18,6 +18,7 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime creatOn;
 
