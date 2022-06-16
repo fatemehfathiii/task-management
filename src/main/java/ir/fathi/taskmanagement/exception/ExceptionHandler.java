@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -31,7 +32,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
+    @org.springframework.web.bind.annotation.ExceptionHandler(HttpServerErrorException.InternalServerError.class)
     ResponseEntity<ExceptionResponse> exception(Exception exception, WebRequest webRequest) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 exception.getMessage(), webRequest.getDescription(false), new Date()
