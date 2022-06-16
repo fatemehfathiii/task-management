@@ -23,8 +23,8 @@ public class JwtTokenUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + 2 * 24 * 60 * 60 * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtKey)
                 .compact();
-
     }
+
 
     public String getUsername(String token) {
         Claims claim = Jwts.parser()
@@ -70,8 +70,5 @@ public class JwtTokenUtil {
         }
         return false;
     }
-
-
-
 
 }

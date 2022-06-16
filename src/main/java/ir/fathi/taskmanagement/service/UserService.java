@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,14 +15,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService  implements UserDetailsService {
+public class UserService implements UserDetailsService {
     private final UserRepository repository;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findUserByUsernameAndDeletedFalse(username)
-                .orElseThrow(()->new UsernameNotFoundException("Invalid credential"));
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid credential"));
     }
 
 
@@ -40,25 +39,26 @@ public class UserService  implements UserDetailsService {
         return repository.findById(id).orElseThrow(RecordNotFoundException::new);
     }
 
-    public List<String> getUserWhoHaveIncompleteTask(){
+    public List<String> getUserWhoHaveIncompleteTask() {
         return repository.userWhoDidNotDoTask();
     }
 
+    public List<User> getActiveUser() {
+        return repository.findUserByDeletedIsFalseAndLockedIsFalse();
+    }
 
-    @Transactional(readOnly = true,isolation = Isolation.SERIALIZABLE)
-    public int countOfActiveUser(){
+    public int countOfActiveUser() {
         return repository.countOfActiveUser();
     }
 
-
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Integer updatePassword(Integer id, String newPassword){
-       return repository.updatePassword(id, newPassword);
+    @Transactional
+    public Integer updatePassword(Integer id, String newPassword) {
+        return repository.updatePassword(id, newPassword);
     }
 
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Integer delete(Integer id){
+    @Transactional
+    public Integer delete(Integer id) {
         return repository.delete(id);
     }
 

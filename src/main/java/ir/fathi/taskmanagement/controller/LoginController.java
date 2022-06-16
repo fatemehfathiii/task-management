@@ -7,6 +7,7 @@ import ir.fathi.taskmanagement.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,9 +25,9 @@ public class LoginController {
     private final JwtTokenUtil jwtTokenUtil;
 
 
-    @PostMapping("/signIn")
+    @PostMapping("/login")
     @MethodDurationLog
-    public ResponseEntity<Object> login(@RequestBody @Valid PostUserDto request) {
+    public ResponseEntity<Object> login(@RequestBody @Valid PostUserDto request)throws BadCredentialsException {
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));

@@ -17,27 +17,25 @@ public interface TaskRepository extends CrudRepository<Task,Integer> {
 
     List<Task> findTaskByOwner_UsernameAndDoneIsNull(String username);
 
-    List<Task> findTaskByOwner_UsernameAndDoneIsNotnull(String username);
-
     List<Task> findTaskByOwner_UsernameAndPriority(String username , TaskPriority priority);
 
 
-    @Query(value = "select * from task t inner join app_user u on u.id=t.user_id where u.username= :username and t.done=current_date",
-            nativeQuery = true)
+    @Query("from Task t where t.owner.username= :username and t.done is not null")
+    List<Task> findTaskByOwner_UsernameAndDoneIsNotnull(@Param("username") String username);
+
+    @Query("from Task t where t.owner.username= :username and t.done=current_date")
     List<Task> findTaskByOwner_UsernameAndDoneToday(@Param("username") String username);
 
-    @Query(value = "select * from task t inner join app_user u on u.id=t.user_id inner join profile p on u.id=p.user_id " +
-            "where p.name= :name and p.lastname= :lastname",
-            nativeQuery = true)
+    @Query("from Task t where t.owner.profile.name= :name and t.owner.profile.lastname= :lastname")
     List<Task> findTaskByNameOfPerson(@Param("name") String name ,@Param("lastname") String lastname);
 
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Query(value = "update Task set done = current_timestamp where done is  null and id= :id")
     Integer updateTimeToDo(@Param("id") Integer id);
 
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Query(value = "update Task set deleteAt = current_timestamp where deleteAt is null and id= :id")
     Integer delete(@Param("id") Integer id);
 

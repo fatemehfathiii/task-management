@@ -5,7 +5,6 @@ import ir.fathi.taskmanagement.model.Profile;
 import ir.fathi.taskmanagement.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -33,12 +32,12 @@ public class ProfileService {
         return repository.findProfileByUsername(username).orElseThrow(RecordNotFoundException::new);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public Integer updateNameAndLastname(Integer id,String name,String lastname) {
      return repository.updateNameAndLastname(id, name, lastname);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ  )
+    @Transactional
     public Integer delete(Integer id){
       return repository.delete(id);
     }

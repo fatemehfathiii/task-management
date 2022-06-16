@@ -54,18 +54,18 @@ public class TaskService {
         return repository.findTaskByOwner_UsernameAndPriority(username,priority);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,readOnly = true)
+
     public List<Task> getTaskByNameOfPerson(String name ,String lastname){
         return repository.findTaskByNameOfPerson(name, lastname);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public Integer updateTimeToDo(Integer id){
       return repository.updateTimeToDo(id);
     }
 
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public Integer delete (Integer id){
        return repository.delete(id);
     }

@@ -27,9 +27,9 @@ public class UserController {
     private final UserService service;
 
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody @Valid PostUserDto postUserDto){
+    public ResponseEntity<String> save(@RequestBody @Valid PostUserDto postUserDto) {
         service.save(User.fromDto(postUserDto));
-        return new ResponseEntity<>("save success",HttpStatus.CREATED);
+        return new ResponseEntity<>("save success", HttpStatus.CREATED);
     }
 
 
@@ -37,10 +37,10 @@ public class UserController {
     @Secured("ROLE_GET_USER")
     @MethodDurationLog
     @ResponseBody
-    public List<GetUserDto> getAll(){
-       return service.getAll().stream()
-               .map(user -> new GetUserDto(user.getUsername()))
-               .collect(Collectors.toList());
+    public List<GetUserDto> getAll() {
+        return service.getAll().stream()
+                .map(user -> new GetUserDto(user.getUsername()))
+                .collect(Collectors.toList());
     }
 
 
@@ -49,44 +49,47 @@ public class UserController {
     @ResponseBody
     @Validated
     public GetUserDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-            return new GetUserDto(service.getById(id).getUsername());
+        return new GetUserDto(service.getById(id).getUsername());
     }
 
     @GetMapping("/get/incomplete")
     @Secured("ROLE_GET_USER")
     @ResponseBody
-    public List<String> getUserWhoHaveIncompleteTask(){
+    public List<String> getUserWhoHaveIncompleteTask() {
         return service.getUserWhoHaveIncompleteTask();
     }
 
-    @GetMapping("/count")
+    @GetMapping("/get/active_user")
     @Secured("ROLE_GET_USER")
     @ResponseBody
-    @MethodDurationLog
-    public ResponseEntity<String> countOfActiveUser(){
-        return new ResponseEntity<>(service.countOfActiveUser()+"users are active",HttpStatus.OK);
+    public List<GetUserDto> getActiveUser() {
+        return service.getActiveUser().stream()
+                .map(user -> new GetUserDto(user.getUsername()))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/get/count")
+    @Secured("ROLE_GET_USER")
+    @ResponseBody
+    public ResponseEntity<String> countOfActiveUser() {
+        return new ResponseEntity<>(service.countOfActiveUser() + "users are active", HttpStatus.OK);
     }
 
     @PatchMapping("/update/{id}")
     @Secured("ROLE_UPDATE_USER")
     @Validated
     @ResponseBody
-    @MethodDurationLog
     public ResponseEntity<String> updatePassword(@PathVariable @Positive Integer id,
                                                  @RequestParam(name = "password") @NotBlank @Min(8) String newPassword) {
-        return new ResponseEntity<>(service.updatePassword(id, newPassword)+"record updated.", HttpStatus.OK);
+        return new ResponseEntity<>(service.updatePassword(id, newPassword) + "record updated.", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     @Secured("ROLE_DELETE_USER")
     @Validated
     @ResponseBody
-    @MethodDurationLog
-    public Map<String,Boolean> delete(@PathVariable @Positive Integer id){
-        service.delete(id);
-        Map<String,Boolean> response = new HashMap<>();
-        response.put("delete",Boolean.TRUE);
-        return response;
+    public ResponseEntity<String> delete(@PathVariable @Positive Integer id) {
+        return new ResponseEntity<>(service.delete(id) + "record deleted", HttpStatus.OK);
     }
 
 }

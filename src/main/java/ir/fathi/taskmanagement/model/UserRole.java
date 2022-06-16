@@ -23,17 +23,27 @@ public class UserRole {
     private LocalDateTime creatOn;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "role_id",referencedColumnName = "id")
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
 
 
     @Override
     public String toString() {
-        return String.format("UserRole:{ %nid= %d%n creatOn= %t%n }",id,creatOn);
+
+        return String.format(
+                      """
+                      UserRole:{
+                      id= %d,
+                      creatOn= %t%n
+                      }
+                      """
+                , id, creatOn);
+
+
     }
 
 

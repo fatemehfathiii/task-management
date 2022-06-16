@@ -39,7 +39,7 @@ public class Profile {
     private boolean deleted;
 
 
-    @OneToOne(optional = false,cascade = CascadeType.PERSIST)
+    @OneToOne(optional = false)
     private User user;
 
 
@@ -59,9 +59,20 @@ public class Profile {
     public String toString() {
 
         return String.format(
-                "Profile:{%n id= %d%n name= %s%n lastname= %s%n gender= %s%n birthday= %s%n " +
-                        "mobileNumber= %s%n email= %s%n deleted=%b%n}",
-                id,name,lastname,gender,birthday,mobileNumber,email,deleted);
+                """
+                        Profile:{
+                        id= %d ,
+                        name= %s ,
+                        lastname= %s ,
+                        gender= %s ,
+                        birthday= %s ,
+                        mobileNumber= %s ,
+                        email= %s ,
+                        deleted=%b
+                        }
+                        """
+                ,
+                id, name, lastname, gender, birthday, mobileNumber, email, deleted);
     }
 
 

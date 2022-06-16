@@ -47,7 +47,7 @@ public class Task {
     private String description;
 
 
-    @ManyToOne(optional = false,cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
 
@@ -65,9 +65,23 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("Task:{%n id= %d%n name= %s%n subject= %s%n type= %s%n " +
-                "priority= %s%n createAt= %t%n updateAt= %t%n deleteAt= %t%n done= %t%n description= %s%n }",
-                id,name,subject,type,priority,createAt,updateAt,deleteAt,done,description);
+
+        return String.format(
+                """
+                        Task:{
+                        id= %d ,
+                        name= %s ,
+                        subject= %s ,
+                        type= %s ,
+                        priority= %s ,
+                        createAt= %t%n ,
+                        updateAt= %t%n ,
+                        deleteAt= %t%n ,
+                        done= %t%n ,
+                        description= %s }
+                               """
+                ,
+                id, name, subject, type, priority, createAt, updateAt, deleteAt, done, description);
     }
 
     @Override

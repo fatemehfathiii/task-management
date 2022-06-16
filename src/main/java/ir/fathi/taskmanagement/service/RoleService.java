@@ -25,7 +25,7 @@ public class RoleService {
         return repository.findById(id).orElseThrow(RecordNotFoundException::new);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public Integer updateRoleName(Integer id,String roleName){
      return repository.updateRoleName(id, roleName);
     }

@@ -14,17 +14,15 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User,Integer> {
 
     Optional<User> findUserByUsernameAndDeletedFalse(String username);
+    List<User> findUserByDeletedIsFalseAndLockedIsFalse();
 
 
-
-    @Query(value = "select count(u.username) from app_user u where u.deleted=false",nativeQuery = true)
+    @Query("select count(u.username) from User u where u.deleted=false")
     int countOfActiveUser();
 
 
-    @Query(value = "select distinct u.username from app_user u inner join task t on u.id=t.user_id where u.deleted=false and t.done IS  NULL" ,
-            nativeQuery = true)
+    @Query("select distinct u.username from User u join u.task t where u.deleted = false and t.done is null")
     List<String> userWhoDidNotDoTask();
-
 
     @Modifying
     @Query(value = "update User set password= :newPassword where id= :id")

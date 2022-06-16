@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/task")
 public class TaskController {
     private final TaskService service;
-
+    private final String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
     @PostMapping
     @Secured("ROLE_ADD_TASK")
@@ -55,7 +56,6 @@ public class TaskController {
     @ResponseBody
     @Validated
     public GetTaskDto getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-
             var task = service.getTaskById(id);
             return new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                     , task.getCreateAt(), task.getDescription());
@@ -65,8 +65,7 @@ public class TaskController {
     @GetMapping("/get/byUsername")
     @Secured("ROLE_GET_TASK")
     @ResponseBody
-    @Validated
-    public List<GetTaskDto> getTaskByUsername(@RequestParam(name = "username") @NotBlank String username) {
+    public List<GetTaskDto> getTaskByUsername() {
         return service.getTaskByUsername(username).stream()
                 .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                         , task.getCreateAt(), task.getDescription()))
@@ -76,8 +75,7 @@ public class TaskController {
     @GetMapping("/get/incomplete")
     @Secured("ROLE_GET_TASK")
     @ResponseBody
-    @Validated
-    public List<GetTaskDto> getIncompleteTaskByUsername(@RequestParam(name = "username") @NotBlank String username){
+    public List<GetTaskDto> getIncompleteTaskByUsername(){
       return service.getIncompleteTaskByUsername(username).stream()
               .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                       , task.getCreateAt(), task.getDescription()))
@@ -87,19 +85,18 @@ public class TaskController {
     @GetMapping("/get/complete")
     @Secured("ROLE_GET_TASK")
     @ResponseBody
-    @Validated
-    public List<GetTaskDto> getCompleteTaskByUsername(@RequestParam(name = "username") @NotBlank String username){
+    public List<GetTaskDto> getCompleteTaskByUsername(){
         return service.getCompleteTaskByUsername(username).stream()
                 .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                         , task.getCreateAt(), task.getDescription()))
                 .collect(Collectors.toList());
     }
 
+
     @GetMapping("/get/today/complete")
     @Secured("ROLE_GET_TASK")
     @ResponseBody
-    @Validated
-    public List<GetTaskDto> getTodayCompleteTask(@RequestParam(name = "username") @NotBlank String username){
+    public List<GetTaskDto> getTodayCompleteTask(){
         return service.getTodayCompleteTask(username).stream()
                 .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                         , task.getCreateAt(), task.getDescription()))
@@ -111,9 +108,8 @@ public class TaskController {
     @ResponseBody
     @Validated
     @MethodDurationLog
-    public List<GetTaskDto> getTaskByPriorityAndUsername(@RequestBody  Map<@NotBlank @NotNull String,@NotNull Object> items){
-
-            return service.getTaskByPriorityAndUsername((String) items.get("name"),(TaskPriority) items.get("priority")).stream()
+    public List<GetTaskDto> getTaskByPriorityAndUsername(@RequestParam(name ="priority") @NotBlank @NotNull TaskPriority priority){
+            return service.getTaskByPriorityAndUsername(username,priority).stream()
                     .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                             , task.getCreateAt(), task.getDescription()))
                     .collect(Collectors.toList());
@@ -145,8 +141,7 @@ public class TaskController {
     @Secured("ROLE_DELETE_TASK")
     @ResponseBody
     public ResponseEntity<String> delete(@PathVariable @Positive Integer id) {
-        service.delete(id);
-        return new ResponseEntity<>("record deleted.", HttpStatus.OK);
+        return new ResponseEntity<>(service.delete(id)+"record deleted.", HttpStatus.OK);
     }
 
 }

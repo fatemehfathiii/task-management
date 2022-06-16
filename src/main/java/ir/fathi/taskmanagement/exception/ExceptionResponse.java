@@ -3,9 +3,9 @@ package ir.fathi.taskmanagement.exception;
 import java.util.Date;
 
 public class ExceptionResponse {
-    private String massage;
-    private String details;
-    private Date date;
+    private final String massage;
+    private final String details;
+    private final Date date;
 
     public ExceptionResponse(String massage, String details, Date date) {
         this.massage = massage;

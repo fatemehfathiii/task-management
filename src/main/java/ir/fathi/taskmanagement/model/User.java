@@ -50,8 +50,18 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return String.format("User:{ %nid= %d%n username= %s%n password=%s%n locked= %b%n deleted= %b%n }",
-                id,username,password,locked,deleted);
+
+        return String.format(
+                        """
+                        User:{
+                        id= %d ,
+                        username= %s ,
+                        password=%s ,
+                        locked= %b ,
+                        deleted= %b
+                         }
+                         """,
+                id, username, password, locked, deleted);
     }
 
 
@@ -73,11 +83,11 @@ public class User implements UserDetails {
         }
     }
 
-//********************************* custom user detail ************************************************
+    //********************************* custom user detail ************************************************
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         var authorities = new HashSet<GrantedAuthority>();
-        userRoles.forEach(userRole-> authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName())) );
+        userRoles.forEach(userRole -> authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName())));
         return authorities;
     }
 

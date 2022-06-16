@@ -11,20 +11,16 @@ import java.util.logging.Logger;
 
 @Aspect
 @Component
-public class MethodDurationLoggerAspect {
+public class MethodLoggerAspect {
 
     @Around("@annotation(ir.fathi.taskmanagement.config.aspect.MethodDurationLog)")
     public Object methodDurationLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
-        Logger logger= (Logger) LoggerFactory.getLogger(MethodDurationLoggerAspect.class);
+        Logger logger= (Logger) LoggerFactory.getLogger(MethodLoggerAspect.class);
 
         Object result;
         long startTime = System.currentTimeMillis();
 
-        try {
-            result = proceedingJoinPoint.proceed();
-        } catch (Throwable exception) {
-            throw exception;
-        }
+        result = proceedingJoinPoint.proceed();
 
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
@@ -35,6 +31,6 @@ public class MethodDurationLoggerAspect {
                         "\nTime taken for Execution is :" + duration + "ms"
         );
         return result;
-
     }
+
 }

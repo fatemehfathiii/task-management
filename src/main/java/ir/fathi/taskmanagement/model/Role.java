@@ -1,7 +1,9 @@
 package ir.fathi.taskmanagement.model;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,14 +23,21 @@ public class Role {
     private String main;
 
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserRole> userRoles;
 
 
     @Override
     public String toString() {
-        return String.format("Role:{%n id= %d%n name= %s%n category= %s%n main= %s%n}",
-                id,name,category,main);
+        return String.format("""
+                        "Role:{
+                        id= %d ,
+                        name= %s ,
+                        category= %s ,
+                         main= %s
+                         }"
+                        """,
+                id, name, category, main);
     }
 
 

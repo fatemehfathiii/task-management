@@ -12,8 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ProfileRepository extends CrudRepository<Profile,Integer> {
 
-    @Query(value = "select * from profile p inner join app_user u on u.id=p.user_id where u.username= :username",
-    nativeQuery = true)
+    @Query(value = "from Profile p where p.user.username= :username")
     Optional<Profile> findProfileByUsername(@Param("username") String username);
 
 
@@ -21,7 +20,7 @@ public interface ProfileRepository extends CrudRepository<Profile,Integer> {
     @Query(value = "update Profile set name= :name ,lastname= :lastname where id= :id")
     Integer updateNameAndLastname(@Param("id") Integer id,@Param("name") String name,@Param("lastName") String lastname);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Query(value = "update Profile set deleted=true where deleted=false  and id= :id")
     Integer delete(@Param("id") Integer id);
 
