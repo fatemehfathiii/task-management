@@ -74,9 +74,9 @@ public class Task {
                         subject= %s ,
                         type= %s ,
                         priority= %s ,
-                        createAt= %t%n ,
-                        updateAt= %t%n ,
-                        deleteAt= %t%n ,
+                        createAt= %t% ,
+                        updateAt= %t% ,
+                        deleteAt= %t% ,
                         done= %t%n ,
                         description= %s }
                                """

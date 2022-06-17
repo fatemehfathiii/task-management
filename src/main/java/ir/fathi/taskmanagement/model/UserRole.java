@@ -38,7 +38,7 @@ public class UserRole {
                       """
                       UserRole:{
                       id= %d,
-                      creatOn= %t%n
+                      creatOn= %t%
                       }
                       """
                 , id, creatOn);

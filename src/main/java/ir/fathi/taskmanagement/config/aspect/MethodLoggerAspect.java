@@ -15,16 +15,13 @@ import java.util.logging.Logger;
 @Component
 public class MethodLoggerAspect {
 
-    Logger logger= (Logger) LoggerFactory.getLogger(MethodLoggerAspect.class);
+    Logger logger = (Logger) LoggerFactory.getLogger(MethodLoggerAspect.class);
 
 
-    @AfterThrowing(value = "execution(* ir.fathi.taskmanagement.controller.*.*(..))",throwing = "exception")
-    public void exceptionDetailLog(JoinPoint joinPoint,Throwable exception){
+    @AfterThrowing(value = "execution(* ir.fathi.taskmanagement.controller.*.*(..))", throwing = "exception")
+    public void exceptionDetailLog(JoinPoint joinPoint, Throwable exception) {
 
-        var signature=joinPoint.getSignature().toShortString();
-        var method=joinPoint.getSignature().getName();
-        var arg= Arrays.toString(joinPoint.getArgs());
-        var info=String.format(
+        var info = String.format(
                 """
                         there is a caught exception!
                         in method : %s ,
@@ -32,12 +29,13 @@ public class MethodLoggerAspect {
                         with arguments : %s ,
                         caught exception %s
                         """
-        ,method,signature,arg,exception.getMessage());
+                , joinPoint.getSignature().toShortString(), joinPoint.getSignature().getName(),
+                Arrays.toString(joinPoint.getArgs()), exception.toString());
         logger.info(info);
     }
 
     @Around("@annotation(ir.fathi.taskmanagement.config.aspect.MethodDurationLog)")
-    public Object methodDurationLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
+    public Object methodDurationLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         Object result;
         long startTime = System.currentTimeMillis();
@@ -47,11 +45,15 @@ public class MethodLoggerAspect {
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
 
-        logger.info(
-                "method signature:" + proceedingJoinPoint.getSignature().toShortString() +
-                        "\n method name :" + proceedingJoinPoint.getSignature().getName() +
-                        "\nTime taken for Execution is :" + duration + "ms"
-        );
+        var info = String.format(
+                """
+                        method signature: %s ,
+                        method name : %s ,
+                        Time taken for Execution is : %d ms
+                             """
+                , proceedingJoinPoint.getSignature().toShortString(), proceedingJoinPoint.getSignature().getName(), duration);
+
+        logger.info(info);
         return result;
     }
 
