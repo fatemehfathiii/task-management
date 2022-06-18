@@ -1,6 +1,8 @@
 package ir.fathi.taskmanagement.config.security;
 
+import ir.fathi.taskmanagement.model.User;
 import ir.fathi.taskmanagement.repository.UserRepository;
+import ir.fathi.taskmanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,8 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final UserRepository repository;
+//    private final UserService repository;
     private final JwtTokenUtil jwtTokenUtil;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -47,11 +50,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        UserDetails userDetails=repository
-                .findUserByUsernameAndDeletedFalse(jwtTokenUtil.getUsername(token))
-                .orElse(null);
+//        UserDetails userDetails=repository
+//                .findUserByUsernameAndDeletedFalse(jwtTokenUtil.getUsername(token))
+//                .orElse(null);
 
 
+        UserDetails userDetails=new User();
         UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,

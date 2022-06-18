@@ -2,19 +2,10 @@ package ir.fathi.taskmanagement.exception;
 
 import java.util.Date;
 
-public class ExceptionResponse {
-    private final String pakageName;
-    private final String details;
-    private final Date date;
-
-    public ExceptionResponse(String pakageName, String details, Date date) {
-        this.pakageName = pakageName;
-        this.details = details;
-        this.date = date;
-    }
+public record ExceptionResponse(String packageName, String details, Date date) {
 
     public String getMassage() {
-        return pakageName;
+        return packageName;
     }
 
     public String getDetails() {

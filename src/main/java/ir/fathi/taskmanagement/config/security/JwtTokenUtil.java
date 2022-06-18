@@ -10,9 +10,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
-@RequiredArgsConstructor
 public class JwtTokenUtil {
+
+
     private final String jwtKey = "qsc#wdv#54321*efb#@#rgNthn#*#236#UK,opl";
+//   private final Logger logger=Logger.getLogger(JwtTokenUtil.class.getName());
 
     public String generateAccessToken(User user) {
         var issuer = "example.io";
@@ -31,7 +33,6 @@ public class JwtTokenUtil {
                 .setSigningKey(jwtKey)
                 .parseClaimsJws(token)
                 .getBody();
-
         return claim.getSubject();
     }
 
@@ -46,27 +47,26 @@ public class JwtTokenUtil {
 
     public boolean validate(String token){
 
-        Logger logger = Logger.getLogger(JwtTokenUtil.class.getName());
 
         try {
             Jwts.parser().setSigningKey(jwtKey).parseClaimsJws(token);
             return true;
         }catch (SignatureException exception){
-            logger.log(Level.WARNING,"token signature is invalid",new SignatureException("SignatureException"));
+//            logger.log(Level.WARNING,"token signature is invalid",new SignatureException("SignatureException"));
 
         }catch (MalformedJwtException exception){
-            logger.log(Level.WARNING,"token and key do not match",new MalformedJwtException("MalformedJwtException"));
+//            logger.log(Level.WARNING,"token and key do not match",new MalformedJwtException("MalformedJwtException"));
 
         }catch (ExpiredJwtException exception){
-            logger.log(Level.WARNING,"expired token");
+//            logger.log(Level.WARNING,"expired token");
 
         }catch (UnsupportedJwtException exception){
-            logger.log(Level.WARNING,"unsupported algorithm",new UnsupportedJwtException("UnsupportedJwtException"));
+//            logger.log(Level.WARNING,"unsupported algorithm",new UnsupportedJwtException("UnsupportedJwtException"));
 
         }catch (IllegalArgumentException exception){
-            logger.log(Level.WARNING,"jwt token claims string is empty",new IllegalArgumentException("IllegalArgumentException"));
+//            logger.log(Level.WARNING,"jwt token claims string is empty",new IllegalArgumentException("IllegalArgumentException"));
         }catch (Exception exception){
-            logger.log(Level.WARNING,"exception occur");
+//            logger.log(Level.WARNING,"exception occur");
         }
         return false;
     }

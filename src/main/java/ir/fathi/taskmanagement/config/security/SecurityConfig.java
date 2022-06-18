@@ -21,8 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        prePostEnabled = true
+        securedEnabled = true
 )
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
