@@ -5,17 +5,18 @@ import ir.fathi.taskmanagement.model.Profile;
 import ir.fathi.taskmanagement.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(readOnly = true , isolation = Isolation.READ_COMMITTED)
 public class ProfileService {
     private final ProfileRepository repository;
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void save(Profile profile){
         repository.save(profile);
     }
@@ -32,12 +33,12 @@ public class ProfileService {
         return repository.findProfileByUsername(username).orElseThrow(RecordNotFoundException::new);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updateNameAndLastname(Integer id,String name,String lastname) {
      return repository.updateNameAndLastname(id, name, lastname);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer delete(Integer id){
       return repository.delete(id);
     }

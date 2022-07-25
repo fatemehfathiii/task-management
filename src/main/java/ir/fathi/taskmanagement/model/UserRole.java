@@ -31,6 +31,14 @@ public class UserRole {
     private Role role;
 
 
+    public static UserRole assignUserWithRole(User user , Role role){
+        UserRole userRole = new UserRole();
+        userRole.setUser(user);
+        userRole.setRole(role);
+        return userRole;
+    }
+
+
     @Override
     public String toString() {
 

@@ -1,7 +1,5 @@
 package ir.fathi.taskmanagement.service;
 
-import ir.fathi.taskmanagement.dto.GetTaskDto;
-import ir.fathi.taskmanagement.dto.PostTaskDto;
 import ir.fathi.taskmanagement.enumType.TaskPriority;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Task;
@@ -11,17 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Priority;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(readOnly = true , isolation = Isolation.READ_COMMITTED)
 public class TaskService {
     private final TaskRepository repository;
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void save(Task task) {
         repository.save(task);
     }
@@ -59,13 +55,13 @@ public class TaskService {
         return repository.findTaskByNameOfPerson(name, lastname);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updateTimeToDo(Integer id){
       return repository.updateTimeToDo(id);
     }
 
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer delete (Integer id){
        return repository.delete(id);
     }

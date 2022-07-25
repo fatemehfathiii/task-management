@@ -8,15 +8,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(readOnly = true , isolation = Isolation.READ_COMMITTED)
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
+
 
 
     @Override
@@ -24,9 +27,9 @@ public class UserService implements UserDetailsService {
         return repository.findUserByUsernameAndDeletedFalse(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid credential"));
     }
+    //*****************************************************************************************
 
-
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void save(User user) {
         repository.save(user);
     }
@@ -37,6 +40,10 @@ public class UserService implements UserDetailsService {
 
     public User getById(Integer id) throws RecordNotFoundException {
         return repository.findById(id).orElseThrow(RecordNotFoundException::new);
+    }
+
+    public User getUserByUsername(String username) throws RecordNotFoundException {
+        return repository.findUserByUsernameAndDeletedFalse(username).orElseThrow(RecordNotFoundException::new);
     }
 
     public List<String> getUserWhoHaveIncompleteTask() {
@@ -51,13 +58,13 @@ public class UserService implements UserDetailsService {
         return repository.countOfActiveUser();
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updatePassword(Integer id, String newPassword) {
         return repository.updatePassword(id, newPassword);
     }
 
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer delete(Integer id) {
         return repository.delete(id);
     }

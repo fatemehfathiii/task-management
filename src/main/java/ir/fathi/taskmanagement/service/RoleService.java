@@ -5,7 +5,6 @@ import ir.fathi.taskmanagement.model.Role;
 import ir.fathi.taskmanagement.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,6 +22,10 @@ public class RoleService {
 
     public Role getById(Integer id) throws RecordNotFoundException {
         return repository.findById(id).orElseThrow(RecordNotFoundException::new);
+    }
+
+    public List<Role> getRoleByListOfName(List<String> roleNames){
+        return repository.findRoleByNameIn(roleNames);
     }
 
     @Transactional

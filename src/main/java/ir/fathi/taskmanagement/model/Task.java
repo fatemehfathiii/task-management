@@ -29,7 +29,7 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     @ElementCollection
-    @CollectionTable(name = "type", joinColumns = @JoinColumn(name = "id", referencedColumnName = "task-id"))
+    @CollectionTable(name = "type", joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
     @Column(name = "type")
     private List<TaskType> type;
 

@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/task")
 public class TaskController {
     private final TaskService service;
-    private final String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
     @PostMapping
     @Secured("ROLE_ADD_TASK")
@@ -66,7 +65,7 @@ public class TaskController {
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getTaskByUsername() {
-        return service.getTaskByUsername(username).stream()
+        return service.getTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
                 .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                         , task.getCreateAt(), task.getDescription()))
                 .collect(Collectors.toList());
@@ -76,7 +75,7 @@ public class TaskController {
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getIncompleteTaskByUsername(){
-      return service.getIncompleteTaskByUsername(username).stream()
+      return service.getIncompleteTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
               .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                       , task.getCreateAt(), task.getDescription()))
               .collect(Collectors.toList());
@@ -86,7 +85,7 @@ public class TaskController {
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getCompleteTaskByUsername(){
-        return service.getCompleteTaskByUsername(username).stream()
+        return service.getCompleteTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
                 .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                         , task.getCreateAt(), task.getDescription()))
                 .collect(Collectors.toList());
@@ -97,7 +96,7 @@ public class TaskController {
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getTodayCompleteTask(){
-        return service.getTodayCompleteTask(username).stream()
+        return service.getTodayCompleteTask(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
                 .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                         , task.getCreateAt(), task.getDescription()))
                 .collect(Collectors.toList());
@@ -109,7 +108,7 @@ public class TaskController {
     @Validated
     @MethodDurationLog
     public List<GetTaskDto> getTaskByPriorityAndUsername(@RequestParam(name ="priority") @NotBlank @NotNull TaskPriority priority){
-            return service.getTaskByPriorityAndUsername(username,priority).stream()
+            return service.getTaskByPriorityAndUsername(SecurityContextHolder.getContext().getAuthentication().getName(),priority).stream()
                     .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
                             , task.getCreateAt(), task.getDescription()))
                     .collect(Collectors.toList());

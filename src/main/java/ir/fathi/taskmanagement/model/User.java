@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private Integer id;
     @Column(nullable = false, unique = true, columnDefinition = "varchar(50)")
     private String username;
-    @Column(nullable = false, columnDefinition = "varchar(30)")
+    @Column(nullable = false, columnDefinition = "varchar(255)")
     private String password;
     private boolean locked;
     private boolean deleted;
@@ -40,10 +40,10 @@ public class User implements UserDetails {
     private List<Task> task;
 
 
-    public static User fromDto(PostUserDto userDto) {
+    public static User fromDto(String username , String password) {
         User user = new User();
-        user.setUsername(userDto.username());
-        user.setPassword(userDto.password());
+        user.setUsername(username);
+        user.setPassword(password);
         return user;
     }
 

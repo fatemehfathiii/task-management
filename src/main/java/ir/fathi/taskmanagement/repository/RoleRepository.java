@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface RoleRepository extends CrudRepository<Role,Integer> {
 
+    List<Role> findRoleByNameIn(List<String> roleName);
+
     @Modifying
     @Query(value = "update Role set name= :roleName where id= :id")
     Integer updateRoleName(@Param("id") Integer id , @Param("roleName") String name);
