@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +26,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService service;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @PostMapping
+    private final UserService service;
+    private final PasswordEncoder passwordEncoder;
+
+    @PostMapping("/register")
     public ResponseEntity<String> save(@RequestBody @Valid PostUserDto postUserDto) {
-        service.save(User.fromDto(postUserDto.username(), bCryptPasswordEncoder.encode(postUserDto.password())));
+        service.save(User.fromDto(postUserDto.username(), passwordEncoder.encode(postUserDto.password())));
         return new ResponseEntity<>("save success", HttpStatus.CREATED);
     }
 

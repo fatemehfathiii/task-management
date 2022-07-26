@@ -1,6 +1,5 @@
 package ir.fathi.taskmanagement.model;
 
-import ir.fathi.taskmanagement.dto.PostUserDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,7 +23,7 @@ public class User implements UserDetails {
     private Integer id;
     @Column(nullable = false, unique = true, columnDefinition = "varchar(50)")
     private String username;
-    @Column(nullable = false, columnDefinition = "varchar(255)")
+    @Column(nullable = false)
     private String password;
     private boolean locked;
     private boolean deleted;

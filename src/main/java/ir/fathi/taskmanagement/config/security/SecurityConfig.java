@@ -56,9 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeHttpRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/user").permitAll()
+                .antMatchers("/user/register").permitAll()
                 .anyRequest().authenticated();
-
 
         http.addFilterBefore(
                 jwtTokenFilter,
@@ -66,7 +65,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
 
     }
-
 
 
     @Bean
