@@ -11,22 +11,19 @@ import java.util.logging.Logger;
 
 @Component
 public class JwtTokenUtil {
-
-
     private final String jwtKey = "qsc#wdv#54321*efb#@#rgNthn#*#236#UK,opl";
 //   private final Logger logger=Logger.getLogger(JwtTokenUtil.class.getName());
 
-    public String generateAccessToken(User user) {
+    public String generateAccessToken(String username) {
         var issuer = "example.io";
         return Jwts.builder()
-                .setSubject(user.getUsername())
+                .setSubject(username)
                 .setIssuer(issuer)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 2 * 24 * 60 * 60 * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtKey)
                 .compact();
     }
-
 
     public String getUsername(String token) {
         Claims claim = Jwts.parser()
@@ -44,10 +41,7 @@ public class JwtTokenUtil {
         return claims.getExpiration();
     }
 
-
     public boolean validate(String token){
-
-
         try {
             Jwts.parser().setSigningKey(jwtKey).parseClaimsJws(token);
             return true;

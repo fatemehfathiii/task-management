@@ -14,13 +14,10 @@ import java.util.Arrays;
 @Aspect
 @Component
 public class MethodLoggerAspect {
-
     Logger logger = LoggerFactory.getLogger(MethodLoggerAspect.class);
-
 
     @AfterThrowing(value = "execution(* ir.fathi.taskmanagement.controller.*.*(..))", throwing = "exception")
     public void exceptionDetailLog(JoinPoint joinPoint, Throwable exception) {
-
         var info = String.format(
                 """
                         there is a caught exception!

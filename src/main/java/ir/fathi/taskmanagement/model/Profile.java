@@ -39,7 +39,7 @@ public class Profile {
     private boolean deleted;
 
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     private User user;
 
 

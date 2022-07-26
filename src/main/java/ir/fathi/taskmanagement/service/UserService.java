@@ -20,8 +20,6 @@ import java.util.List;
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
 
-
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findUserByUsernameAndDeletedFalse(username)
@@ -70,4 +68,7 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public boolean isExistsUsername(String username) {
+        return repository.existsByUsernameAndDeletedFalse(username);
+    }
 }

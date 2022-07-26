@@ -28,12 +28,8 @@ public class LoginController {
     @PostMapping("/login")
     @MethodDurationLog
     public ResponseEntity<Object> login(@RequestBody @Valid PostUserDto request)throws BadCredentialsException {
-
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
-
-        return ResponseEntity.accepted().body(jwtTokenUtil.generateAccessToken((User) authentication.getPrincipal()));
-
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
+        return ResponseEntity.accepted().body(jwtTokenUtil.generateAccessToken(request.username()));
     }
 
 }

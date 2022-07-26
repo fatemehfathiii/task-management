@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     @Column(nullable = false)
     private String name;
@@ -23,7 +22,7 @@ public class Role {
     private String main;
 
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "role")
     private List<UserRole> userRoles;
 
 

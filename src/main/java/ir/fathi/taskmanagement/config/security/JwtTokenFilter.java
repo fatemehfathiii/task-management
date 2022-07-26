@@ -1,5 +1,8 @@
 package ir.fathi.taskmanagement.config.security;
+import ir.fathi.taskmanagement.model.User;
 import ir.fathi.taskmanagement.repository.UserRepository;
+import ir.fathi.taskmanagement.repository.UserRoleRepository;
+import ir.fathi.taskmanagement.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +26,7 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final UserRepository repository;
+    private final UserRoleService userRoleService;
     private final JwtTokenUtil jwtTokenUtil;
 
     @Override
@@ -49,7 +53,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        UserDetails userDetails=repository
+        UserDetails userDetails = repository
                 .findUserByUsernameAndDeletedFalse(jwtTokenUtil.getUsername(token))
                 .orElse(null);
 

@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private boolean deleted;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<UserRole> userRoles;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -86,7 +86,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         var authorities = new HashSet<GrantedAuthority>();
-        userRoles.forEach(userRole -> authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName())));
+        userRoles.stream().map(r -> "ROLE_" + r.getRole().getName()).forEach(r ->  authorities.add(new SimpleGrantedAuthority(r)));
         return authorities;
     }
 

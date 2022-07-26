@@ -12,14 +12,12 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<User,Integer> {
-
+    boolean existsByUsernameAndDeletedFalse(String username);
     Optional<User> findUserByUsernameAndDeletedFalse(String username);
     List<User> findUserByDeletedIsFalseAndLockedIsFalse();
 
-
     @Query("select count(u.username) from User u where u.deleted=false")
     int countOfActiveUser();
-
 
     @Query("select distinct u.username from User u join u.task t where u.deleted = false and t.done is null")
     List<String> userWhoDidNotDoTask();
