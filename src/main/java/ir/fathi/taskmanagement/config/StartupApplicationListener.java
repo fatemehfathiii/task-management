@@ -29,6 +29,8 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
     private final PasswordEncoder passwordEncoder;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        //todo save all roles: exception: ignore
+
         if (!userService.isExistsUsername("administrator2")) {
             User user = new User();
 
