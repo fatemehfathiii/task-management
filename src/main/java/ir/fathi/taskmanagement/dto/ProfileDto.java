@@ -8,6 +8,7 @@ import ir.fathi.taskmanagement.customValidation.MobileNumber;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.PastOrPresent;
+import java.time.LocalDate;
 import java.util.Date;
 
 public record ProfileDto(
@@ -19,7 +20,7 @@ public record ProfileDto(
         @JsonProperty("lastname")
         String lastname,
 
-        @JsonProperty("gender")
+        @JsonProperty("sex")
         @Messenger(message = "sex must be male or female or ")
         Sex sex,
 
@@ -27,7 +28,7 @@ public record ProfileDto(
         @Messenger(message = "birthday must be in (yyyy/mm/yy) format ")
         @JsonFormat(pattern = "yyyy/mm/yy")
         @JsonProperty("birthday")
-        Date birthday,
+        LocalDate birthday,
 
         @MobileNumber(massage = "your mobile number is invalid")
         @Messenger(message = "mobile number must start whit 09 or 0098 or +98 ")
@@ -38,7 +39,7 @@ public record ProfileDto(
         @JsonProperty("email") String email
 ) {
 
-    public ProfileDto(String name, String lastname, Sex sex, Date birthday,
+    public ProfileDto(String name, String lastname, Sex sex, LocalDate birthday,
                       String mobileNumber, String email) {
         this.name = name;
         this.lastname = lastname;

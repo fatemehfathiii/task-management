@@ -41,8 +41,10 @@ public class User implements UserDetails {
 
     public static User fromDto(String username , String password) {
         User user = new User();
+        Profile profile = new Profile();
         user.setUsername(username);
         user.setPassword(password);
+        user.setProfile(profile);
         return user;
     }
 

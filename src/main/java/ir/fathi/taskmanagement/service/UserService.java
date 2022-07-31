@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true , isolation = Isolation.READ_COMMITTED)
+
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
 
