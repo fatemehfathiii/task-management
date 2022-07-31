@@ -13,12 +13,10 @@ public record UpdateProfileDto(
         Integer id,
 
         @NotBlank
-        @NotNull
         @JsonProperty("name")
         String name,
 
         @NotBlank
-        @NotNull
         @JsonProperty("lastname")
         String lastname
 ) {

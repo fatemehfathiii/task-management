@@ -1,6 +1,6 @@
 package ir.fathi.taskmanagement.model;
 
-import ir.fathi.taskmanagement.enumType.Gender;
+import ir.fathi.taskmanagement.enumType.Sex;
 import ir.fathi.taskmanagement.dto.ProfileDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class Profile {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Gender gender;
+    private Sex sex;
 
     @Column(nullable = false, columnDefinition = "date")
     private Date birthday;
@@ -47,7 +47,7 @@ public class Profile {
         Profile profile = new Profile();
         profile.setName(profileDto.name());
         profile.setLastname(profileDto.lastname());
-        profile.setGender(profileDto.gender());
+        profile.setSex(profileDto.sex());
         profile.setBirthday(profileDto.birthday());
         profile.setMobileNumber(profileDto.mobileNumber());
         profile.setEmail(profileDto.email());
@@ -64,7 +64,7 @@ public class Profile {
                         id= %d ,
                         name= %s ,
                         lastname= %s ,
-                        gender= %s ,
+                        sex= %s ,
                         birthday= %s ,
                         mobileNumber= %s ,
                         email= %s ,
@@ -72,7 +72,7 @@ public class Profile {
                         }
                         """
                 ,
-                id, name, lastname, gender, birthday, mobileNumber, email, deleted);
+                id, name, lastname, sex, birthday, mobileNumber, email, deleted);
     }
 
 

@@ -37,7 +37,7 @@ public class ProfileController {
     @MethodDurationLog
     public List<ProfileDto> getAll() {
         return service.getAll().stream()
-                .map(profile -> new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
+                .map(profile -> new ProfileDto(profile.getName(), profile.getLastname(), profile.getSex()
                         , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail()))
                 .collect(Collectors.toList());
     }
@@ -48,7 +48,7 @@ public class ProfileController {
     @Validated
     public ProfileDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
         var profile = service.getById(id);
-        return new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
+        return new ProfileDto(profile.getName(), profile.getLastname(), profile.getSex()
                 , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail());
     }
 
@@ -58,7 +58,7 @@ public class ProfileController {
     @ResponseBody
     public ProfileDto getProfileByUsername() throws RecordNotFoundException {
         var profile = service.getProfileByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        return new ProfileDto(profile.getName(), profile.getLastname(), profile.getGender()
+        return new ProfileDto(profile.getName(), profile.getLastname(), profile.getSex()
                 , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail());
     }
 

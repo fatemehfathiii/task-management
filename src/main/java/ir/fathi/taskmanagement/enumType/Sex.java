@@ -1,12 +1,12 @@
 package ir.fathi.taskmanagement.enumType;
 
-public enum Gender {
+public enum Sex {
     MALE(0),
     FEMALE(1);
 
     private final int label;
 
-    Gender(int label) {
+    Sex(int label) {
         this.label = label;
     }
 

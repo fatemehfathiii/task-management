@@ -7,17 +7,14 @@ import javax.validation.constraints.NotNull;
 public record RoleDto(
 
         @NotBlank
-        @NotNull
         @JsonProperty("main")
         String main,
 
         @NotBlank
-        @NotNull
         @JsonProperty("category")
         String category,
 
         @NotBlank
-        @NotNull
         @JsonProperty("name")
         String name
 ) {
