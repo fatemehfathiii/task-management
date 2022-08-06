@@ -45,12 +45,13 @@ public class UserRole {
         return String.format(
                       """
                       UserRole:{
-                      id= %d,
-                      creatOn= %t%
+                      id = %d ,
+                      creatOn = %tF ,
+                      user_id = %d ,
+                      role_id = %d
                       }
                       """
-                , id, creatOn);
-
+                , id, creatOn,user.getId(),role.getId());
 
     }
 

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 
 @Service
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
+    private final UserRoleService userRoleService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,8 +31,10 @@ public class UserService implements UserDetailsService {
     //*****************************************************************************************
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void save(User user) {
+    public void save(User user) throws RecordNotFoundException {
         repository.save(user);
+        userRoleService.defaultRoleAssignmentToUser(user);
+        Logger.getLogger(UserService.class.getName()).info("you can edit your profile.");
     }
 
     public List<User> getAll() {

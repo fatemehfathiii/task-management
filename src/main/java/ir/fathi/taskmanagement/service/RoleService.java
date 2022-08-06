@@ -20,16 +20,13 @@ public class RoleService {
     }
 
 
-    public Role getById(Integer id) throws RecordNotFoundException {
-        return repository.findById(id).orElseThrow(RecordNotFoundException::new);
-    }
-
     public List<Role> getRoleByListOfName(List<String> roleNames){
         return repository.findRoleByNameIn(roleNames);
     }
 
-    @Transactional
-    public Integer updateRoleName(Integer id,String roleName){
-     return repository.updateRoleName(id, roleName);
+    public Role getRoleByRoleName(String name) throws RecordNotFoundException {
+        return repository.findRoleByName(name).orElseThrow(RecordNotFoundException::new);
     }
+
+
 }

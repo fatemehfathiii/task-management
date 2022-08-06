@@ -13,7 +13,6 @@ import java.util.Date;
 
 public record ProfileDto(
 
-
         @JsonProperty("name")
         String name,
 

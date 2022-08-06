@@ -31,7 +31,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<String> save(@RequestBody @Valid PostUserDto postUserDto) {
+    public ResponseEntity<String> save(@RequestBody @Valid PostUserDto postUserDto) throws RecordNotFoundException {
         service.save(User.fromDto(postUserDto.username(), passwordEncoder.encode(postUserDto.password())));
         return new ResponseEntity<>("save success", HttpStatus.CREATED);
     }

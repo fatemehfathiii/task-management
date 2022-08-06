@@ -39,7 +39,7 @@ public class User implements UserDetails {
     private List<Task> task;
 
 
-    public static User fromDto(String username , String password) {
+    public static User fromDto(String username, String password) {
         User user = new User();
         Profile profile = new Profile();
         user.setUsername(username);
@@ -53,16 +53,17 @@ public class User implements UserDetails {
     public String toString() {
 
         return String.format(
-                        """
-                        User:{
-                        id= %d ,
-                        username= %s ,
-                        password=%s ,
-                        locked= %b ,
-                        deleted= %b
-                         }
-                         """,
-                id, username, password, locked, deleted);
+                """
+                         User:{
+                         id = %d ,
+                         username = %s ,
+                         password = %s ,
+                         locked = %b ,
+                         deleted = %b ,
+                         profile_id = %d
+                        }
+                          """,
+                id, username, password, locked, deleted ,profile.getId());
     }
 
 
@@ -88,7 +89,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         var authorities = new HashSet<GrantedAuthority>();
-        userRoles.stream().map(r -> "ROLE_" + r.getRole().getName()).forEach(r ->  authorities.add(new SimpleGrantedAuthority(r)));
+        userRoles.forEach(r -> authorities.add(new SimpleGrantedAuthority(r.getRole().getName())));
         return authorities;
     }
 

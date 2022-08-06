@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -25,15 +27,26 @@ public class UserRoleService {
         roleService.getRoleByListOfName(roleNames).forEach(
                 role -> {
                     userRoleRepository.save(UserRole.assignUserWithRole(user, role));
+                    Logger.getLogger(UserRoleService.class.getName())
+                            .info("create"+roleNames.size()+" new records in userRole table.");
                 }
         );
     }
 
-    public void saveRoleAndUserInUserRoleTable(User user, List<Role> roles) throws RecordNotFoundException {
-        roles.forEach(r -> userRoleRepository.save(UserRole.assignUserWithRole(user, r)));
+    public void saveRoleAndUserInUserRoleTable(User user, List<Role> roles) {
+        roles.forEach(r ->{
+            userRoleRepository.save(UserRole.assignUserWithRole(user, r));
+        });
+        Logger.getLogger(UserRoleService.class.getName()).info("create"+roles.size()+" new records in userRole table.");
     }
 
-    public void getRolesByUserId(Integer id) {
+    public void defaultRoleAssignmentToUser(User user) throws RecordNotFoundException {
+        var role = roleService.getRoleByRoleName("ROLE_GET_PROFILE");
+        userRoleRepository.save(UserRole.assignUserWithRole(user,role));
+    }
+
+    public List<Role> getRolesByUserId(Integer id){
+        return userRoleRepository.rolesOfUser(id);
 
     }
 }

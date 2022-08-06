@@ -8,13 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RoleRepository extends CrudRepository<Role,Integer> {
 
     List<Role> findRoleByNameIn(List<String> roleName);
+    Optional<Role> findRoleByName(String name);
 
-    @Modifying
-    @Query(value = "update Role set name= :roleName where id= :id")
-    Integer updateRoleName(@Param("id") Integer id , @Param("roleName") String name);
+
 }
