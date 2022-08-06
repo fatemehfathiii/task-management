@@ -52,14 +52,14 @@ public class Task {
     private User owner;
 
 
-    public static Task fromDto(PostTaskDto taskDto) {
+    public static Task fromDto(User owner,PostTaskDto taskDto) {
         Task task = new Task();
         task.setName(taskDto.name());
         task.setType(taskDto.type());
         task.setSubject(taskDto.subject());
         task.setPriority(taskDto.priority());
         task.setDescription(taskDto.description());
-        task.setOwner(taskDto.owner());
+        task.setOwner(owner);
         return task;
     }
 

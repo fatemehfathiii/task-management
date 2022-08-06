@@ -34,8 +34,8 @@ public class TaskController {
 
     @PostMapping
     @Secured("ROLE_ADD_TASK")
-    public ResponseEntity<String> save(@RequestBody @Valid PostTaskDto taskDto) {
-        service.save(Task.fromDto(taskDto));
+    public ResponseEntity<String> save(@RequestBody @Valid PostTaskDto taskDto) throws RecordNotFoundException {
+        service.save(taskDto);
         return new ResponseEntity<>("save success",HttpStatus.CREATED);
     }
 

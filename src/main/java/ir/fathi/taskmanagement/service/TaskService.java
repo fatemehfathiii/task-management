@@ -1,5 +1,6 @@
 package ir.fathi.taskmanagement.service;
 
+import ir.fathi.taskmanagement.dto.PostTaskDto;
 import ir.fathi.taskmanagement.enumType.TaskPriority;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Task;
@@ -15,55 +16,57 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true , isolation = Isolation.READ_COMMITTED)
 public class TaskService {
-    private final TaskRepository repository;
+    private final TaskRepository taskRepository;
+    private final UserService userService;
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void save(Task task) {
-        repository.save(task);
+    public void save(PostTaskDto postTaskDto) throws RecordNotFoundException {
+        var owner =userService.getUserByUsername(postTaskDto.username());
+        taskRepository.save(Task.fromDto(owner,postTaskDto));
     }
 
     public List<Task> getAll() {
-        return (List<Task>) repository.findAll();
+        return (List<Task>) taskRepository.findAll();
     }
 
     public Task getTaskById(Integer id) throws RecordNotFoundException {
-        return repository.findById(id).orElseThrow(RecordNotFoundException::new);
+        return taskRepository.findById(id).orElseThrow(RecordNotFoundException::new);
     }
 
     public List<Task> getTaskByUsername(String username){
-        return repository.findTaskByOwner_Username(username);
+        return taskRepository.findTaskByOwner_Username(username);
     }
 
     public List<Task> getIncompleteTaskByUsername(String username){
-        return repository.findTaskByOwner_UsernameAndDoneIsNull(username);
+        return taskRepository.findTaskByOwner_UsernameAndDoneIsNull(username);
     }
 
     public List<Task> getCompleteTaskByUsername(String username){
-        return repository.findTaskByOwner_UsernameAndDoneIsNotnull(username);
+        return taskRepository.findTaskByOwner_UsernameAndDoneIsNotnull(username);
     }
 
     public List<Task> getTodayCompleteTask(String username){
-        return  repository.findTaskByOwner_UsernameAndDoneToday(username);
+        return  taskRepository.findTaskByOwner_UsernameAndDoneToday(username);
     }
 
     public List<Task> getTaskByPriorityAndUsername(String username , TaskPriority priority){
-        return repository.findTaskByOwner_UsernameAndPriority(username,priority);
+        return taskRepository.findTaskByOwner_UsernameAndPriority(username,priority);
     }
 
 
     public List<Task> getTaskByNameOfPerson(String name ,String lastname){
-        return repository.findTaskByNameOfPerson(name, lastname);
+        return taskRepository.findTaskByNameOfPerson(name, lastname);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updateTimeToDo(Integer id){
-      return repository.updateTimeToDo(id);
+      return taskRepository.updateTimeToDo(id);
     }
 
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer delete (Integer id){
-       return repository.delete(id);
+       return taskRepository.delete(id);
     }
 
 }

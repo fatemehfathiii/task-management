@@ -1,20 +1,16 @@
 package ir.fathi.taskmanagement.controller;
 import ir.fathi.taskmanagement.config.aspect.MethodDurationLog;
 import ir.fathi.taskmanagement.dto.ProfileDto;
-import ir.fathi.taskmanagement.dto.UpdateProfileDto;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
-import ir.fathi.taskmanagement.model.Profile;
 import ir.fathi.taskmanagement.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 

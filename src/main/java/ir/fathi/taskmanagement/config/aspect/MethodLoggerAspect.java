@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class MethodLoggerAspect {
     Logger logger = LoggerFactory.getLogger(MethodLoggerAspect.class);
 
-    @AfterThrowing(value = "execution(* ir.fathi.taskmanagement.controller.*.*(..))", throwing = "exception")
+    @AfterThrowing(value = "execution(* ir.fathi.taskmanagement.*.*.*(..))", throwing = "exception")
     public void exceptionDetailLog(JoinPoint joinPoint, Throwable exception) {
         var info = String.format(
                 """
@@ -33,7 +33,6 @@ public class MethodLoggerAspect {
 
     @Around("@annotation(ir.fathi.taskmanagement.config.aspect.MethodDurationLog)")
     public Object methodDurationLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
         Object result;
         long startTime = System.currentTimeMillis();
 

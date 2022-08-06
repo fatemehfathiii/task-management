@@ -9,6 +9,7 @@ import ir.fathi.taskmanagement.model.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public record PostTaskDto(
@@ -26,11 +27,11 @@ public record PostTaskDto(
         @Messenger(message = "priority must be  LOW or MEDIUM or HIGH or HIGHEST ")
         @JsonProperty("priority") TaskPriority priority,
 
-        @NotBlank
+        @Messenger(message = "you can write description for this task.")
         @JsonProperty("description") String description,
 
-        @NotNull
-        @JsonProperty("owner") User owner
-
+        @NotBlank
+        @Size(min = 6,message = "username of owner must longer than 6 character ")
+        @JsonProperty("owner") String username
 ) {
 }
