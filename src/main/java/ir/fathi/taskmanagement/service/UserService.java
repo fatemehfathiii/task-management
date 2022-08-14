@@ -9,19 +9,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true , isolation = Isolation.READ_COMMITTED)
-
+@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
-    private final UserRoleService userRoleService;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,13 +29,6 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid credential"));
     }
     //*****************************************************************************************
-
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void save(User user) throws RecordNotFoundException {
-        repository.save(user);
-        userRoleService.defaultRoleAssignmentToUser(user);
-        Logger.getLogger(UserService.class.getName()).info("you can edit your profile.");
-    }
 
     public List<User> getAll() {
         return (List<User>) repository.findAll();
@@ -45,9 +38,11 @@ public class UserService implements UserDetailsService {
         return repository.findById(id).orElseThrow(RecordNotFoundException::new);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
     public User getUserByUsername(String username) throws RecordNotFoundException {
         return repository.findUserByUsernameAndDeletedFalse(username).orElseThrow(RecordNotFoundException::new);
     }
+
 
     public List<String> getUserWhoHaveIncompleteTask() {
         return repository.userWhoDidNotDoTask();
@@ -73,6 +68,7 @@ public class UserService implements UserDetailsService {
     }
 
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
     public boolean isExistsUsername(String username) {
         return repository.existsByUsernameAndDeletedFalse(username);
     }

@@ -19,7 +19,8 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final UserService userService;
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void save(PostTaskDto postTaskDto) throws RecordNotFoundException {
         var owner =userService.getUserByUsername(postTaskDto.username());
         taskRepository.save(Task.fromDto(owner,postTaskDto));

@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface RoleRepository extends CrudRepository<Role,Integer> {
-
     List<Role> findRoleByNameIn(List<String> roleName);
     Optional<Role> findRoleByName(String name);
 

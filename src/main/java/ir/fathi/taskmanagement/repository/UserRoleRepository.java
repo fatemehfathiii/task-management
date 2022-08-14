@@ -6,14 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
-public interface UserRoleRepository extends CrudRepository<UserRole,Integer> {
+public interface UserRoleRepository extends CrudRepository<UserRole, Integer> {
 
-    @Query("select UserRole.role from UserRole ur where ur.user.id =: userId")
+    @Query(value = "select role from role r inner join userRole ur on r.id=ur.role_id where ur.user_id =: id "
+            , nativeQuery = true)
     List<Role> rolesOfUser(@Param("userId") Integer id);
-
 
 }

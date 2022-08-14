@@ -27,6 +27,7 @@ public class ProfileService {
         return repository.findProfileByUsername(username).orElseThrow(RecordNotFoundException::new);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updateProfile(String name, String lastname, Sex sex, LocalDate birthday , String mobileNumber, String email){
         return repository.updateProfile(name, lastname, sex, birthday, mobileNumber, email);
     }
