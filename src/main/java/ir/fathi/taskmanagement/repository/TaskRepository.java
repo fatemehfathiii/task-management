@@ -18,6 +18,7 @@ public interface TaskRepository extends CrudRepository<Task,Integer> {
     List<Task> findTaskByOwner_UsernameAndDoneIsNull(String username);
 
     List<Task> findTaskByOwner_UsernameAndPriority(String username , TaskPriority priority);
+    boolean existsByTaskCode(int taskCode);
 
 
     @Query("from Task t where t.owner.username= :username and t.done is not null")

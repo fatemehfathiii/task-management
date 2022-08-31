@@ -1,6 +1,6 @@
 package ir.fathi.taskmanagement.service;
 
-import ir.fathi.taskmanagement.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.customValidation.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.User;
 import ir.fathi.taskmanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

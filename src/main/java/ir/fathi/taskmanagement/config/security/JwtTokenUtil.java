@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 @Component
 public class JwtTokenUtil {
     private final String jwtKey = "qsc#wdv#54321*efb#@#rgNthn#*#236#UK,opl";
-//   private final Logger logger=Logger.getLogger(JwtTokenUtil.class.getName());
 
     public String generateAccessToken(String username) {
         var issuer = "example.io";

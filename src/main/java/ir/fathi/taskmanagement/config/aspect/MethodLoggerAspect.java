@@ -5,6 +5,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,9 @@ import java.util.Arrays;
 public class MethodLoggerAspect {
     Logger logger = LoggerFactory.getLogger(MethodLoggerAspect.class);
 
-    @AfterThrowing(value = "execution(* ir.fathi.taskmanagement.*.*.*(..))", throwing = "exception")
+    @AfterThrowing(value = "allOverTheApp() && !(exceptForTheController()) && !(exceptForTheAspectPackage())"
+            , throwing = "exception")
+
     public void exceptionDetailLog(JoinPoint joinPoint, Throwable exception) {
         var info = String.format(
                 """
@@ -53,4 +56,13 @@ public class MethodLoggerAspect {
         return result;
     }
 
+
+    @Pointcut(value = "execution(* ir.fathi.taskmanagement.*.*.*(..))")
+    private void allOverTheApp(){}
+
+    @Pointcut(value = "execution(* ir.fathi.taskmanagement.controller.*.*(..))")
+    private void exceptForTheController(){}
+
+    @Pointcut(value = "execution(* ir.fathi.taskmanagement.config.aspect.*.*(..))")
+    private void exceptForTheAspectPackage(){}
 }

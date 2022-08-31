@@ -1,11 +1,13 @@
 package ir.fathi.taskmanagement.model;
 
+import ir.fathi.taskmanagement.dto.PostUserDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -21,7 +23,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
-    @Column(nullable = false, unique = true, columnDefinition = "varchar(50)")
+    @Column(nullable = false, unique = true,updatable = false, columnDefinition = "varchar(50)")
     private String username;
     @Column(nullable = false)
     private String password;
@@ -29,21 +31,24 @@ public class User implements UserDetails {
     private boolean deleted;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<UserRole> userRoles;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Profile profile;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Task> task;
 
 
-    public static User fromDto(String username, String password) {
+    public static User fromDto(PostUserDto postUserDto , String encodePassword) {
         User user = new User();
         Profile profile = new Profile();
-        user.setUsername(username);
-        user.setPassword(password);
+        user.setUsername(postUserDto.username());
+        user.setPassword(encodePassword);
+        profile.setName(postUserDto.name());
+        profile.setLastname(postUserDto.lastname());
+        profile.setNationalCode(postUserDto.nationalCode());
         user.setProfile(profile);
         return user;
     }
@@ -79,10 +84,9 @@ public class User implements UserDetails {
 
         if (this.getId() != null) {
             User user = (User) object;
-            return this.getId().equals(user.getId());
-        } else {
-            return false;
+            return user.getUsername().equals(this.username) || user.getId().equals(this.id);
         }
+        return false;
     }
 
     //********************************* custom user detail ************************************************

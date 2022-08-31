@@ -4,7 +4,7 @@ import ir.fathi.taskmanagement.config.aspect.MethodDurationLog;
 import ir.fathi.taskmanagement.dto.GetTaskDto;
 import ir.fathi.taskmanagement.dto.PostTaskDto;
 import ir.fathi.taskmanagement.enumType.TaskPriority;
-import ir.fathi.taskmanagement.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.customValidation.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Task;
 import ir.fathi.taskmanagement.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -14,16 +14,14 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,11 +30,17 @@ import java.util.stream.Collectors;
 public class TaskController {
     private final TaskService service;
 
+
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Secured("ROLE_ADD_TASK")
-    public ResponseEntity<String> save(@RequestBody @Valid PostTaskDto taskDto) throws RecordNotFoundException {
-        service.save(taskDto);
-        return new ResponseEntity<>("save success",HttpStatus.CREATED);
+    public void save(@RequestBody @Valid PostTaskDto taskDto)  {
+        try {
+            service.save(Task.fromDto(taskDto) , taskDto.username());
+        }catch (RecordNotFoundException recordNotFoundException){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND ,"there is any user whit this username");
+        }
+
     }
 
     @GetMapping("/getAll")
@@ -44,9 +48,7 @@ public class TaskController {
     @ResponseBody
     public List<GetTaskDto> getAllTask() {
         return service.getAll().stream()
-                .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
-                        , task.getCreateAt(), task.getDescription()))
-                .collect(Collectors.toList());
+                .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
 
@@ -54,10 +56,13 @@ public class TaskController {
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
-    public GetTaskDto getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
-            var task = service.getTaskById(id);
-            return new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
-                    , task.getCreateAt(), task.getDescription());
+    public GetTaskDto getTaskById(@PathVariable @Positive Integer id){
+
+        try {
+            return GetTaskDto.generateCustomGetTaskDto(service.getTaskById(id));
+        }catch (RecordNotFoundException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND ,"there is any task whit this id" );
+        }
     }
 
 
@@ -66,19 +71,16 @@ public class TaskController {
     @ResponseBody
     public List<GetTaskDto> getTaskByUsername() {
         return service.getTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
-                .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
-                        , task.getCreateAt(), task.getDescription()))
-                .collect(Collectors.toList());
+                .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
+
 
     @GetMapping("/get/incomplete")
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getIncompleteTaskByUsername(){
       return service.getIncompleteTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
-              .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
-                      , task.getCreateAt(), task.getDescription()))
-              .collect(Collectors.toList());
+              .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
     @GetMapping("/get/complete")
@@ -86,9 +88,7 @@ public class TaskController {
     @ResponseBody
     public List<GetTaskDto> getCompleteTaskByUsername(){
         return service.getCompleteTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
-                .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
-                        , task.getCreateAt(), task.getDescription()))
-                .collect(Collectors.toList());
+                .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
 
@@ -97,9 +97,7 @@ public class TaskController {
     @ResponseBody
     public List<GetTaskDto> getTodayCompleteTask(){
         return service.getTodayCompleteTask(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
-                .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
-                        , task.getCreateAt(), task.getDescription()))
-                .collect(Collectors.toList());
+                .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
     @GetMapping("/get/byPriority")
@@ -109,9 +107,7 @@ public class TaskController {
     @MethodDurationLog
     public List<GetTaskDto> getTaskByPriorityAndUsername(@RequestParam(name ="priority") @NotBlank @NotNull TaskPriority priority){
             return service.getTaskByPriorityAndUsername(SecurityContextHolder.getContext().getAuthentication().getName(),priority).stream()
-                    .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
-                            , task.getCreateAt(), task.getDescription()))
-                    .collect(Collectors.toList());
+                    .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
 
     }
 
@@ -122,9 +118,7 @@ public class TaskController {
     @MethodDurationLog
     public List<GetTaskDto> getTaskByNameOfPerson(@RequestBody @Valid Map< @NotBlank String, @NotBlank @NotNull String> items){
         return service.getTaskByNameOfPerson(items.get("name"),items.get("lastname")).stream()
-                .map(task -> new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
-                        , task.getCreateAt(), task.getDescription()))
-                .collect(Collectors.toList());
+                .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
 
@@ -136,7 +130,8 @@ public class TaskController {
         return new ResponseEntity<>(service.updateTimeToDo(id) + "record updated.", HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+
+    @PatchMapping("/delete/{id}")
     @Secured("ROLE_DELETE_TASK")
     @ResponseBody
     public ResponseEntity<String> delete(@PathVariable @Positive Integer id) {

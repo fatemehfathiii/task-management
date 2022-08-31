@@ -20,18 +20,18 @@ public record PostTaskDto(
         @JsonProperty("subject") String subject,
 
         @NotEmpty
-        @Messenger(message = " type must be undefined or FixedWork or FixedDuration or FixedUnits ")
+        @Messenger(message = " type must be undefined or FixedWork or FixedDuration or FixedUnits. ")
         @JsonProperty("type") List<TaskType> type,
 
         @NotBlank
-        @Messenger(message = "priority must be  LOW or MEDIUM or HIGH or HIGHEST ")
+        @Messenger(message = "priority must be  LOW or MEDIUM or HIGH or HIGHEST. ")
         @JsonProperty("priority") TaskPriority priority,
 
-        @Messenger(message = "you can write description for this task.")
+        @Size(max = 255 , message = "you must write description with 255 character.")
         @JsonProperty("description") String description,
 
         @NotBlank
-        @Size(min = 6,message = "username of owner must longer than 6 character ")
+        @Size(min = 6,message = "username of owner must longer than 6 character. ")
         @JsonProperty("owner") String username
 ) {
 }

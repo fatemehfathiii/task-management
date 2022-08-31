@@ -30,7 +30,7 @@ public class Role {
         this.main = main;
     }
 
-    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY)
     private List<UserRole> userRoles;
 
 
@@ -60,9 +60,9 @@ public class Role {
 
         if (this.getId() != null) {
             Role role = (Role) object;
-            return this.getId().equals(role.getId());
-        } else {
-            return false;
+            return role.getName().equals(this.name);
         }
+            return false;
+
     }
 }

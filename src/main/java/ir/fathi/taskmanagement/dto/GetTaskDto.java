@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ir.fathi.taskmanagement.enumType.TaskPriority;
 import ir.fathi.taskmanagement.enumType.TaskType;
+import ir.fathi.taskmanagement.model.Task;
 import ir.fathi.taskmanagement.model.User;
 
 import java.time.LocalDateTime;
@@ -26,15 +27,20 @@ public record GetTaskDto(
 
 ) {
 
-        public GetTaskDto(String name, List<TaskType> type, String subject,
-                          TaskPriority priority, LocalDateTime creatAt, String description) {
-                this.name = name;
-                this.type = type;
-                this.subject = subject;
-                this.priority = priority;
-                this.creatAt = creatAt;
-                this.description = description;
+    public GetTaskDto(String name, List<TaskType> type, String subject,
+                      TaskPriority priority, LocalDateTime creatAt, String description) {
+        this.name = name;
+        this.type = type;
+        this.subject = subject;
+        this.priority = priority;
+        this.creatAt = creatAt;
+        this.description = description;
 
-        }
+    }
+
+    public static GetTaskDto generateCustomGetTaskDto(Task task){
+        return  new GetTaskDto(task.getName(), task.getType(), task.getSubject(), task.getPriority()
+                , task.getCreateAt(), task.getDescription());
+    }
 
 }

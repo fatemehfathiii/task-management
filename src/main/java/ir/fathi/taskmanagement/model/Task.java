@@ -29,7 +29,7 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     @ElementCollection
-    @CollectionTable(name = "type", joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
+    @CollectionTable(name = "type", joinColumns = @JoinColumn(name = "taskType_id", referencedColumnName = "id"))
     @Column(name = "type")
     private List<TaskType> type;
 
@@ -43,23 +43,24 @@ public class Task {
     private LocalDateTime updateAt;
     private LocalDateTime deleteAt;
     private LocalDateTime done;
-    @Column(columnDefinition = "text")
     private String description;
 
+    @Column(nullable = false, updatable = false, unique = true)
+    private int taskCode;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
 
 
-    public static Task fromDto(User owner,PostTaskDto taskDto) {
+    public static Task fromDto(PostTaskDto taskDto) {
         Task task = new Task();
         task.setName(taskDto.name());
         task.setType(taskDto.type());
         task.setSubject(taskDto.subject());
         task.setPriority(taskDto.priority());
         task.setDescription(taskDto.description());
-        task.setOwner(owner);
         return task;
     }
 
@@ -96,10 +97,9 @@ public class Task {
 
         if (this.getId() != null) {
             Task task = (Task) object;
-            return this.getId().equals(task.getId());
-        } else {
-            return false;
+            return task.getTaskCode() == this.taskCode || task.getId().equals(this.id);
         }
-
+        return false;
     }
+
 }

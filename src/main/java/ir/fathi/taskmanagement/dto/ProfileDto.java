@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ir.fathi.taskmanagement.customValidation.Messenger;
 import ir.fathi.taskmanagement.enumType.Sex;
 import ir.fathi.taskmanagement.customValidation.MobileNumber;
+import ir.fathi.taskmanagement.model.Profile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.PastOrPresent;
@@ -18,6 +19,9 @@ public record ProfileDto(
 
         @JsonProperty("lastname")
         String lastname,
+
+        @JsonProperty("nationalCode")
+        String nationalCode ,
 
         @JsonProperty("sex")
         @Messenger(message = "sex must be male or female or ")
@@ -38,13 +42,21 @@ public record ProfileDto(
         @JsonProperty("email") String email
 ) {
 
-    public ProfileDto(String name, String lastname, Sex sex, LocalDate birthday,
+    public ProfileDto(String name, String lastname,String nationalCode, Sex sex, LocalDate birthday,
                       String mobileNumber, String email) {
         this.name = name;
         this.lastname = lastname;
+        this.nationalCode=nationalCode;
         this.sex = sex;
         this.birthday = birthday;
         this.mobileNumber = mobileNumber;
         this.email = email;
+    }
+
+
+    public static ProfileDto generateCustomProfileDto(Profile profile){
+
+        return new ProfileDto(profile.getName(), profile.getLastname() , profile.getNationalCode() , profile.getSex()
+                , profile.getBirthday(), profile.getMobileNumber(), profile.getEmail());
     }
 }

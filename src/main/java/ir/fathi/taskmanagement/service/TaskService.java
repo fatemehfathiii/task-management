@@ -1,13 +1,14 @@
 package ir.fathi.taskmanagement.service;
 
-import ir.fathi.taskmanagement.dto.PostTaskDto;
 import ir.fathi.taskmanagement.enumType.TaskPriority;
-import ir.fathi.taskmanagement.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.customValidation.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Task;
+import ir.fathi.taskmanagement.random_object.GenerateRandomNumber;
 import ir.fathi.taskmanagement.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,9 +22,11 @@ public class TaskService {
 
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void save(PostTaskDto postTaskDto) throws RecordNotFoundException {
-        var owner =userService.getUserByUsername(postTaskDto.username());
-        taskRepository.save(Task.fromDto(owner,postTaskDto));
+    public void save(Task task , String username) throws RecordNotFoundException {
+        var owner =userService.getUserByUsername(username);
+        task.setTaskCode(generateRandomUniqueTaskCode());
+        task.setOwner(owner);
+        taskRepository.save(task);
     }
 
     public List<Task> getAll() {
@@ -68,6 +71,16 @@ public class TaskService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer delete (Integer id){
        return taskRepository.delete(id);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED , propagation = Propagation.REQUIRED)
+    public int generateRandomUniqueTaskCode(){
+        var taskCode= GenerateRandomNumber.generateNumber();
+
+        while (taskRepository.existsByTaskCode(taskCode)) {
+            taskCode= GenerateRandomNumber.generateNumber();
+        }
+        return taskCode;
     }
 
 }

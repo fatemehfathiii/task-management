@@ -1,14 +1,13 @@
 package ir.fathi.taskmanagement.model;
 
 import ir.fathi.taskmanagement.enumType.Sex;
-import ir.fathi.taskmanagement.dto.ProfileDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
+
 
 @Entity
 @Setter
@@ -18,14 +17,20 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String lastname;
+    @Column(nullable = false , unique = true)
+    private String nationalCode;
+
 
     @Enumerated(EnumType.STRING)
     private Sex sex;
 
     private LocalDate birthday;
     private String mobileNumber;
+
 
     @Column(unique = true)
     private String email;
@@ -70,10 +75,9 @@ public class Profile {
 
         if (this.getId() != null) {
             Profile profile = (Profile) object;
-            return this.getId().equals(profile.getId());
-        } else {
-            return false;
+            return profile.getNationalCode().equals(this.nationalCode) || profile.getId().equals(this.id);
         }
-
+        return false;
     }
+
 }

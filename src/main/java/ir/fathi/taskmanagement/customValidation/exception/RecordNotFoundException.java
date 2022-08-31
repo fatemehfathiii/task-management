@@ -1,4 +1,4 @@
-package ir.fathi.taskmanagement.exception;
+package ir.fathi.taskmanagement.customValidation.exception;
 
 import java.util.Date;
 
@@ -12,6 +12,10 @@ public class RecordNotFoundException extends Exception{
 
     public RecordNotFoundException() {
         super("Record not found");
+    }
+
+    public String getMessage(String message) {
+        return message;
     }
 
     public Date getTime() {

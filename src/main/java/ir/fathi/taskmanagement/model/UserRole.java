@@ -52,7 +52,6 @@ public class UserRole {
                       }
                       """
                 , id, creatOn,user.getId(),role.getId());
-
     }
 
 
@@ -72,7 +71,6 @@ public class UserRole {
         } else {
             return false;
         }
-
 
     }
 }

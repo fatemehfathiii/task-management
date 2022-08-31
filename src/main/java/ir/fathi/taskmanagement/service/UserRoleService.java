@@ -1,6 +1,6 @@
 package ir.fathi.taskmanagement.service;
 
-import ir.fathi.taskmanagement.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.customValidation.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Role;
 import ir.fathi.taskmanagement.model.User;
 import ir.fathi.taskmanagement.model.UserRole;
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 @Service

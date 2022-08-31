@@ -22,10 +22,11 @@ public interface ProfileRepository extends CrudRepository<Profile, Integer> {
             update Profile
             set name =: name ,
              lastname =: lastname ,
+             nationalCode =: natonalCode,
              sex =: sex,
              birthday =: birthday ,
              mobileNumber =: mobileNumber,
              email =: email
                         """)
-    Integer updateProfile(String name, String lastname, Sex sex, LocalDate birthday , String mobileNumber, String email);
+    Integer updateProfile(String name, String lastname ,String nationalCode , Sex sex, LocalDate birthday , String mobileNumber, String email);
 }

@@ -14,4 +14,8 @@ public record GetUserDto(
         public GetUserDto(String username) {
                 this.username = username;
         }
+
+        public static GetUserDto generateCustomGetUserDto(User user){
+                return new GetUserDto(user.getUsername());
+        }
 }

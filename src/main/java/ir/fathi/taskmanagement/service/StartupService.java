@@ -1,6 +1,6 @@
 package ir.fathi.taskmanagement.service;
 
-import ir.fathi.taskmanagement.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.dto.PostUserDto;
 import ir.fathi.taskmanagement.model.Role;
 import ir.fathi.taskmanagement.model.User;
 import ir.fathi.taskmanagement.repository.RoleRepository;
@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -24,6 +23,8 @@ public class StartupService {
     private final UserRoleService userRoleService;
     private final PasswordEncoder passwordEncoder;
 
+
+
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void saveAllRole() {
         roleRepository.saveAll(generateRole());
@@ -32,12 +33,11 @@ public class StartupService {
 
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void makeUserAdmin() throws RecordNotFoundException {
-
+    public void makeUserAdmin(){
         if (!userService.isExistsUsername("administrator")) {
 
-            var user_admin = User.fromDto("administrator", passwordEncoder.encode("user_admin"));
-
+            PostUserDto postUserDto=new PostUserDto("administrator","user_admin","ADMIN","ADMIN","NATIONAL_CODE" );
+            var user_admin = User.fromDto(postUserDto, passwordEncoder.encode("user_admin"));
             userRepository.save(user_admin);
             List<Role> allRoll = (List<Role>) roleRepository.findAll();
             userRoleService.saveRoleAndUserInUserRoleTable(user_admin, allRoll);
@@ -62,6 +62,4 @@ public class StartupService {
                 new Role(11, "ROLE_DELETE_TASK", "DELETE", "TASK")
         );
     }
-
-
 }

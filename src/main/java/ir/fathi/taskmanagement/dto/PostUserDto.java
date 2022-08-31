@@ -8,12 +8,30 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public record PostUserDto(
-        @Size(min = 6,message = "username must longer than 6 character ")
+        @Size(min = 6 , max = 50, message = "username must be between 6 and 50 character ")
         @JsonProperty("username")
         String username,
 
-        @Size(min = 8 ,message = "password must longer than 8 character ")
+        @Size(min = 8, message = "password must longer than 8 character ")
         @JsonProperty("password")
-        String password
+        String password,
+
+        @NotBlank(message = "you must enter your name")
+        String name,
+
+        @NotBlank(message = "you must enter your lastname")
+        String lastname,
+
+        @NotBlank(message = "you must enter your lastname")
+        @Size(min = 10)
+        String nationalCode
 ) {
+
+        public PostUserDto(String username, String password, String name, String lastname, String nationalCode) {
+                this.username = username;
+                this.password = password;
+                this.name = name;
+                this.lastname = lastname;
+                this.nationalCode = nationalCode;
+        }
 }
