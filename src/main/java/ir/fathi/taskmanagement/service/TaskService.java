@@ -1,9 +1,9 @@
 package ir.fathi.taskmanagement.service;
 
 import ir.fathi.taskmanagement.enumType.TaskPriority;
-import ir.fathi.taskmanagement.customValidation.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Task;
-import ir.fathi.taskmanagement.random_object.GenerateRandomNumber;
+import ir.fathi.taskmanagement.random_object.GenerateRandomObject;
 import ir.fathi.taskmanagement.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,7 @@ import java.util.List;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final UserService userService;
+    private final GenerateRandomObject generateRandomObject;
 
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -75,10 +76,10 @@ public class TaskService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED , propagation = Propagation.REQUIRED)
     public int generateRandomUniqueTaskCode(){
-        var taskCode= GenerateRandomNumber.generateNumber();
+        var taskCode= generateRandomObject.generateNumber();
 
         while (taskRepository.existsByTaskCode(taskCode)) {
-            taskCode= GenerateRandomNumber.generateNumber();
+            taskCode= generateRandomObject.generateNumber();
         }
         return taskCode;
     }

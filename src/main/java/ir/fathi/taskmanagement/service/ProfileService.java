@@ -1,7 +1,7 @@
 package ir.fathi.taskmanagement.service;
 
 import ir.fathi.taskmanagement.enumType.Sex;
-import ir.fathi.taskmanagement.customValidation.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Profile;
 import ir.fathi.taskmanagement.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;

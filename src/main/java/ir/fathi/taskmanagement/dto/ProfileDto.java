@@ -2,7 +2,6 @@ package ir.fathi.taskmanagement.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ir.fathi.taskmanagement.customValidation.Messenger;
 import ir.fathi.taskmanagement.enumType.Sex;
 import ir.fathi.taskmanagement.customValidation.MobileNumber;
 import ir.fathi.taskmanagement.model.Profile;
@@ -10,7 +9,6 @@ import ir.fathi.taskmanagement.model.Profile;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
-import java.util.Date;
 
 public record ProfileDto(
 
@@ -24,17 +22,14 @@ public record ProfileDto(
         String nationalCode ,
 
         @JsonProperty("sex")
-        @Messenger(message = "sex must be male or female or ")
         Sex sex,
 
         @PastOrPresent
-        @Messenger(message = "birthday must be in (yyyy/mm/yy) format ")
         @JsonFormat(pattern = "yyyy/mm/yy")
         @JsonProperty("birthday")
         LocalDate birthday,
 
         @MobileNumber(massage = "your mobile number is invalid")
-        @Messenger(message = "mobile number must start whit 09 or 0098 or +98 ")
         @JsonProperty("mobilNumber")
         String mobileNumber,
 

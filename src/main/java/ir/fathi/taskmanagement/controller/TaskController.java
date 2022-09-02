@@ -4,7 +4,7 @@ import ir.fathi.taskmanagement.config.aspect.MethodDurationLog;
 import ir.fathi.taskmanagement.dto.GetTaskDto;
 import ir.fathi.taskmanagement.dto.PostTaskDto;
 import ir.fathi.taskmanagement.enumType.TaskPriority;
-import ir.fathi.taskmanagement.customValidation.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Task;
 import ir.fathi.taskmanagement.service.TaskService;
 import lombok.RequiredArgsConstructor;

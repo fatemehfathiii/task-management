@@ -1,18 +1,18 @@
 package ir.fathi.taskmanagement.random_object;
 
+import org.springframework.stereotype.Component;
+
 import java.security.SecureRandom;
 
-public class GenerateRandomNumber {
-
+@Component
+public class GenerateRandomObject {
     private static final SecureRandom secureRandom;
 
     static {
         secureRandom=new SecureRandom();
     }
 
-
-    public static int generateNumber(){
+    public int generateNumber(){
         return secureRandom.nextInt(1000,10000000);
     }
-
 }

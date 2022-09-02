@@ -3,7 +3,7 @@ package ir.fathi.taskmanagement.controller;
 import ir.fathi.taskmanagement.config.aspect.MethodDurationLog;
 import ir.fathi.taskmanagement.dto.GetUserDto;
 import ir.fathi.taskmanagement.dto.PostUserDto;
-import ir.fathi.taskmanagement.customValidation.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.User;
 import ir.fathi.taskmanagement.service.SaveUserService;
 import ir.fathi.taskmanagement.service.UserService;

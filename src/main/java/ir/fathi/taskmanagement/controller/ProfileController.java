@@ -1,6 +1,6 @@
 package ir.fathi.taskmanagement.controller;
 import ir.fathi.taskmanagement.dto.ProfileDto;
-import ir.fathi.taskmanagement.customValidation.exception.RecordNotFoundException;
+import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
