@@ -100,12 +100,12 @@ public class TaskController {
                 .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/get/byPriority")
+    @GetMapping("/get/byPriority/{priority}")
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
     @MethodDurationLog
-    public List<GetTaskDto> getTaskByPriorityAndUsername(@RequestParam(name ="priority") @NotBlank @NotNull TaskPriority priority){
+    public List<GetTaskDto> getTaskByPriorityAndUsername(@PathVariable @NotBlank @NotNull TaskPriority priority){
             return service.getTaskByPriorityAndUsername(SecurityContextHolder.getContext().getAuthentication().getName(),priority).stream()
                     .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
 

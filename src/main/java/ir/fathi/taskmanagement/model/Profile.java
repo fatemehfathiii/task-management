@@ -38,7 +38,7 @@ public class Profile {
     private boolean deleted;
 
 
-    @OneToOne(optional = false)
+    @OneToOne(mappedBy = "profile",fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private User user;
 
 

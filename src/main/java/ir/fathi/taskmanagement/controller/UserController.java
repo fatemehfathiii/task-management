@@ -1,6 +1,7 @@
 package ir.fathi.taskmanagement.controller;
 
 import ir.fathi.taskmanagement.config.aspect.MethodDurationLog;
+import ir.fathi.taskmanagement.dto.CustomPasswordDto;
 import ir.fathi.taskmanagement.dto.GetUserDto;
 import ir.fathi.taskmanagement.dto.PostUserDto;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
@@ -83,13 +84,12 @@ public class UserController {
         return new ResponseEntity<>(userService.countOfActiveUser() + "users are active", HttpStatus.OK);
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/update")
     @Secured("ROLE_UPDATE_USER")
-    @Validated
     @ResponseBody
-    public ResponseEntity<String> updatePassword(@PathVariable @Positive Integer id,
-                                                 @RequestParam(name = "password") @NotBlank @Min(8) String newPassword) {
-        return new ResponseEntity<>(userService.updatePassword(id, newPassword) + "record updated.", HttpStatus.OK);
+    public ResponseEntity<String> updatePassword(@RequestBody @Validated CustomPasswordDto newPassword) {
+        return new ResponseEntity<>(userService.updatePassword(
+                newPassword.id(), passwordEncoder.encode(newPassword.NowPassword())) + "record updated.", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
