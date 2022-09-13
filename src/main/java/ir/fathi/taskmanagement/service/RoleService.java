@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class RoleService {
     }
 
     public Role getRoleByRoleName(String name) throws RecordNotFoundException {
-        return repository.findRoleByName(name).orElseThrow(RecordNotFoundException::new);
+        return repository.findRoleByName(name).orElseThrow(()-> new RecordNotFoundException(LocalDateTime.now()));
     }
 
 

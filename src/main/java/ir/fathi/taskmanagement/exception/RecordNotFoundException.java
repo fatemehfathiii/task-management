@@ -1,28 +1,27 @@
 package ir.fathi.taskmanagement.exception;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 public class RecordNotFoundException extends Exception{
 
-    private Date time;
+    private LocalDateTime time;
 
-    public RecordNotFoundException(Object obj) {
-        super("Record not found (param :"+obj+")");
+    public RecordNotFoundException(LocalDateTime time , String param) {
+        super("record not found with this param : "+param);
+        this.time = time;
     }
 
-    public RecordNotFoundException() {
-        super("Record not found");
+    public RecordNotFoundException( LocalDateTime time ) {
+        super("record not found ");
+        this.time = time;
     }
 
-    public String getMessage(String message) {
-        return message;
-    }
-
-    public Date getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 }

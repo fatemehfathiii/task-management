@@ -1,6 +1,7 @@
 package ir.fathi.taskmanagement.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ir.fathi.taskmanagement.customValidation.ValidateEnum;
 import ir.fathi.taskmanagement.enumType.TaskPriority;
 import ir.fathi.taskmanagement.enumType.TaskType;
 
@@ -16,10 +17,11 @@ public record PostTaskDto(
         @NotBlank
         @JsonProperty("subject") String subject,
 
-        @NotEmpty
+        @ValidateEnum(targetClassType =TaskType.class , message = " type must be undefined or fixedWork or fixedDuration or fixedUnits")
         @JsonProperty("type") List<TaskType> type,
 
         @NotBlank
+        @ValidateEnum(targetClassType = TaskPriority.class,message = "priority must be low or medium or high or highest")
         @JsonProperty("priority") TaskPriority priority,
 
         @Size(max = 255 , message = "you must write description with 255 character.")

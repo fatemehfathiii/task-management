@@ -3,7 +3,6 @@ package ir.fathi.taskmanagement.service;
 import ir.fathi.taskmanagement.enumType.TaskPriority;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
 import ir.fathi.taskmanagement.model.Task;
-import ir.fathi.taskmanagement.random_object.GenerateRandomObject;
 import ir.fathi.taskmanagement.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,7 +21,7 @@ import java.util.List;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final UserService userService;
-    private final GenerateRandomObject generateRandomObject;
+    private final SecureRandom secureRandom;
 
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -34,8 +36,9 @@ public class TaskService {
         return (List<Task>) taskRepository.findAll();
     }
 
+
     public Task getTaskById(Integer id) throws RecordNotFoundException {
-        return taskRepository.findById(id).orElseThrow(RecordNotFoundException::new);
+        return taskRepository.findById(id).orElseThrow(()->new RecordNotFoundException(LocalDateTime.now()));
     }
 
     public List<Task> getTaskByUsername(String username){
@@ -74,12 +77,14 @@ public class TaskService {
        return taskRepository.delete(id);
     }
 
+
+
     @Transactional(isolation = Isolation.READ_COMMITTED , propagation = Propagation.REQUIRED)
     public int generateRandomUniqueTaskCode(){
-        var taskCode= generateRandomObject.generateNumber();
+        var taskCode= secureRandom.nextInt(1000,10000000);
 
         while (taskRepository.existsByTaskCode(taskCode)) {
-            taskCode= generateRandomObject.generateNumber();
+            taskCode=secureRandom.nextInt(1000,10000000) ;
         }
         return taskCode;
     }

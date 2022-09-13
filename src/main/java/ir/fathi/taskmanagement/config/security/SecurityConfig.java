@@ -1,5 +1,6 @@
 package ir.fathi.taskmanagement.config.security;
 
+import ir.fathi.taskmanagement.exception.CustomAuthenticationFailureHandler;
 import ir.fathi.taskmanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -51,6 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             );
                         })
                 )
+                .and()
+                .formLogin()
+                .failureHandler(authenticationFailureHandler())
                 .and();
 
 
@@ -64,6 +69,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 UsernamePasswordAuthenticationFilter.class
         );
 
+    }
+
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler(){
+        return new CustomAuthenticationFailureHandler();
     }
 
 

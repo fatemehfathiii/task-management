@@ -34,16 +34,12 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Secured("ROLE_ADD_TASK")
-    public void save(@RequestBody @Valid PostTaskDto taskDto)  {
-        try {
+    public void save(@RequestBody @Valid PostTaskDto taskDto) throws RecordNotFoundException {
             service.save(Task.fromDto(taskDto) , taskDto.username());
-        }catch (RecordNotFoundException recordNotFoundException){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND ,"there is any user whit this username");
-        }
-
     }
 
     @GetMapping("/getAll")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getAllTask() {
@@ -53,29 +49,27 @@ public class TaskController {
 
 
     @GetMapping("/get/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
-    public GetTaskDto getTaskById(@PathVariable @Positive Integer id){
-
-        try {
-            return GetTaskDto.generateCustomGetTaskDto(service.getTaskById(id));
-        }catch (RecordNotFoundException exception){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND ,"there is any task whit this id" );
-        }
+    public GetTaskDto getTaskById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
+         return GetTaskDto.generateCustomGetTaskDto(service.getTaskById(id));
     }
 
 
     @GetMapping("/get/byUsername")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getTaskByUsername() {
-        return service.getTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
-                .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
+        return service.getTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                .stream().map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
 
     @GetMapping("/get/incomplete")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getIncompleteTaskByUsername(){
@@ -84,6 +78,7 @@ public class TaskController {
     }
 
     @GetMapping("/get/complete")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getCompleteTaskByUsername(){
@@ -93,11 +88,12 @@ public class TaskController {
 
 
     @GetMapping("/get/today/complete")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     public List<GetTaskDto> getTodayCompleteTask(){
-        return service.getTodayCompleteTask(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
-                .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
+        return service.getTodayCompleteTask(SecurityContextHolder.getContext().getAuthentication().getName())
+                .stream().map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
     @GetMapping("/get/byPriority/{priority}")
@@ -106,12 +102,13 @@ public class TaskController {
     @Validated
     @MethodDurationLog
     public List<GetTaskDto> getTaskByPriorityAndUsername(@PathVariable @NotBlank @NotNull TaskPriority priority){
-            return service.getTaskByPriorityAndUsername(SecurityContextHolder.getContext().getAuthentication().getName(),priority).stream()
-                    .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
+            return service.getTaskByPriorityAndUsername(SecurityContextHolder.getContext().getAuthentication().getName(),priority)
+                    .stream().map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
 
     }
 
     @GetMapping("/get/byName")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_TASK")
     @ResponseBody
     @Validated
@@ -127,7 +124,7 @@ public class TaskController {
     @Validated
     @ResponseBody
     public ResponseEntity<String> updateTimeToDo(@PathVariable @Positive Integer id) {
-        return new ResponseEntity<>(service.updateTimeToDo(id) + "record updated.", HttpStatus.OK);
+        return ResponseEntity.ok().body(service.updateTimeToDo(id) + "record updated.");
     }
 
 
@@ -135,7 +132,7 @@ public class TaskController {
     @Secured("ROLE_DELETE_TASK")
     @ResponseBody
     public ResponseEntity<String> delete(@PathVariable @Positive Integer id) {
-        return new ResponseEntity<>(service.delete(id)+"record deleted.", HttpStatus.OK);
+        return ResponseEntity.ok().body(service.delete(id)+"record deleted.");
     }
 
 }

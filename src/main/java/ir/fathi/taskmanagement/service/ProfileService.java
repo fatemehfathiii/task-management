@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class ProfileService {
     private final ProfileRepository repository;
 
     public Profile getProfileByUsername(String username) throws RecordNotFoundException {
-        return repository.findProfileByUsername(username).orElseThrow(RecordNotFoundException::new);
+        return repository.findProfileByUsername(username).orElseThrow(()-> new RecordNotFoundException(LocalDateTime.now()));
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)

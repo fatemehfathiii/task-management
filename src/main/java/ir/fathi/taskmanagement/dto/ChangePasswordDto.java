@@ -7,13 +7,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
-public record CustomPasswordDto(
+public record ChangePasswordDto(
         @NotNull
         @Positive
         @JsonProperty("id") Integer id,
 
         @NotBlank
         @Size(min = 8 , message = "password must longer than 8 character ")
-        @JsonProperty("NowPassword")  String NowPassword
+        @JsonProperty("NewPassword")  String NewPassword
 ) {
 }

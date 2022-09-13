@@ -18,18 +18,9 @@ public class SaveUserService {
 
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void save(User user){
-        try{
-            userRepository.save(user);
-            userRoleService.defaultRoleAssignmentToUser(user);
-            Logger.getLogger(SaveUserService.class.getName()).info("you can edit your profile.");
-
-        }catch (RecordNotFoundException exception){
-            userRepository.save(user);
-            exception.getMessage("role name not find for default user role .");
-            Logger.getLogger(SaveUserService.class.getName())
-                    .info("user saved but you can not edit your profile without authentication.");
-        }
-
+    public void save(User user) throws RecordNotFoundException {
+        userRepository.save(user);
+        userRoleService.defaultRoleAssignmentToUser(user);
+        Logger.getLogger(SaveUserService.class.getName()).info("you can edit your profile.");
     }
 }

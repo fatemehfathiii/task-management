@@ -22,7 +22,7 @@ public record PostUserDto(
         @NotBlank(message = "you must enter your lastname")
         String lastname,
 
-        @NotBlank(message = "you must enter your lastname")
+        @NotBlank(message = "you must enter your nationalCode")
         @Size(min = 10)
         String nationalCode
 ) {

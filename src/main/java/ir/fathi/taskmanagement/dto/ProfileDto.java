@@ -2,6 +2,7 @@ package ir.fathi.taskmanagement.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ir.fathi.taskmanagement.customValidation.ValidateEnum;
 import ir.fathi.taskmanagement.enumType.Sex;
 import ir.fathi.taskmanagement.customValidation.MobileNumber;
 import ir.fathi.taskmanagement.model.Profile;
@@ -21,11 +22,12 @@ public record ProfileDto(
         @JsonProperty("nationalCode")
         String nationalCode ,
 
+        @ValidateEnum(targetClassType = Sex.class , message = "sex must be female or male")
         @JsonProperty("sex")
         Sex sex,
 
         @PastOrPresent
-        @JsonFormat(pattern = "yyyy/mm/yy")
+        @JsonFormat(pattern = "yyyy/mm/dd")
         @JsonProperty("birthday")
         LocalDate birthday,
 

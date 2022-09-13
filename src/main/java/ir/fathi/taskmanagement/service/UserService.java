@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -35,16 +36,17 @@ public class UserService implements UserDetailsService {
     }
 
     public User getById(Integer id) throws RecordNotFoundException {
-        return repository.findById(id).orElseThrow(RecordNotFoundException::new);
+        return repository.findById(id).orElseThrow(()-> new RecordNotFoundException(LocalDateTime.now()));
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
     public User getUserByUsername(String username) throws RecordNotFoundException {
-        return repository.findUserByUsernameAndDeletedFalse(username).orElseThrow(RecordNotFoundException::new);
+        return repository.findUserByUsernameAndDeletedFalse(username)
+                .orElseThrow(()-> new RecordNotFoundException(LocalDateTime.now()));
     }
 
 
-    public List<String> getUserWhoHaveIncompleteTask() {
+    public List<String> getUserWhoHasIncompleteTask() {
         return repository.userWhoDidNotDoTask();
     }
 

@@ -1,7 +1,7 @@
 package ir.fathi.taskmanagement.controller;
 
 import ir.fathi.taskmanagement.config.aspect.MethodDurationLog;
-import ir.fathi.taskmanagement.dto.CustomPasswordDto;
+import ir.fathi.taskmanagement.dto.ChangePasswordDto;
 import ir.fathi.taskmanagement.dto.GetUserDto;
 import ir.fathi.taskmanagement.dto.PostUserDto;
 import ir.fathi.taskmanagement.exception.RecordNotFoundException;
@@ -33,13 +33,14 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestBody @Valid PostUserDto postUserDto) {
+    public void save(@RequestBody @Valid PostUserDto postUserDto) throws RecordNotFoundException {
         saveUserService.save(User.fromDto(postUserDto, passwordEncoder.encode(postUserDto.password())));
     }
 
 
     @GetMapping("/getAll")
     @Secured("ROLE_GET_USER")
+    @ResponseStatus(HttpStatus.OK)
     @MethodDurationLog
     @ResponseBody
     public List<GetUserDto> getAll() {
@@ -49,55 +50,52 @@ public class UserController {
 
 
     @GetMapping("/get/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_USER")
     @ResponseBody
     @Validated
-    public GetUserDto getById(@PathVariable @Positive Integer id){
-        try {
+    public GetUserDto getById(@PathVariable @Positive Integer id) throws RecordNotFoundException {
             return GetUserDto.generateCustomGetUserDto(userService.getById(id));
-        } catch (RecordNotFoundException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "there is any user with this id.", exception);
-        }
-
-
     }
 
     @GetMapping("/get/incomplete")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_USER")
     @ResponseBody
-    public List<String> getUserWhoHaveIncompleteTask() {
-        return userService.getUserWhoHaveIncompleteTask();
+    public List<String> getUserWhoHasIncompleteTask() {
+        return userService.getUserWhoHasIncompleteTask();
     }
 
     @GetMapping("/get/active_user")
+    @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_USER")
     @ResponseBody
     public List<GetUserDto> getActiveUser() {
-        return userService.getActiveUser().stream()
-                .map(GetUserDto::generateCustomGetUserDto).collect(Collectors.toList());
+        return userService.getActiveUser().stream().map(GetUserDto::generateCustomGetUserDto).collect(Collectors.toList());
     }
 
     @GetMapping("/get/count")
     @Secured("ROLE_GET_USER")
     @ResponseBody
     public ResponseEntity<String> countOfActiveUser() {
-        return new ResponseEntity<>(userService.countOfActiveUser() + "users are active", HttpStatus.OK);
+        return ResponseEntity.ok().body(userService.countOfActiveUser() + "users are active");
     }
 
     @PatchMapping("/update")
     @Secured("ROLE_UPDATE_USER")
     @ResponseBody
-    public ResponseEntity<String> updatePassword(@RequestBody @Validated CustomPasswordDto newPassword) {
-        return new ResponseEntity<>(userService.updatePassword(
-                newPassword.id(), passwordEncoder.encode(newPassword.NowPassword())) + "record updated.", HttpStatus.OK);
+    public ResponseEntity<String> updatePassword(@RequestBody @Validated ChangePasswordDto newPassword) {
+        var updated=userService.updatePassword(newPassword.id(), passwordEncoder.encode(newPassword.NewPassword()));
+        return ResponseEntity.ok().body(updated + "record updated.");
     }
+
 
     @DeleteMapping("/delete/{id}")
     @Secured("ROLE_DELETE_USER")
     @Validated
     @ResponseBody
     public ResponseEntity<String> delete(@PathVariable @Positive Integer id) {
-        return new ResponseEntity<>(userService.delete(id) + "record deleted", HttpStatus.OK);
+        return ResponseEntity.ok().body(userService.delete(id) + "record deleted");
     }
 
 }

@@ -2,7 +2,7 @@ package ir.fathi.taskmanagement.enumType;
 
 public enum TaskType {
 
-    undefined(0),
+    UNDEFINED(0),
     FixedWork(1),
     FixedDuration(2),
     FixedUnits(3);

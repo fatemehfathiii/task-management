@@ -24,31 +24,18 @@ public class UserRoleController {
     private final UserRoleService service;
 
     @PostMapping("/assign")
+    @ResponseStatus( HttpStatus.CREATED)
     @Secured("ROLE_ASSIGN_ROLE")
-    public ResponseEntity<String> assignUserWithRole(@RequestBody @Valid PostUserRoleDto userRoleDto)   {
-        try {
+    public void assignUserWithRole(@RequestBody @Valid PostUserRoleDto userRoleDto) throws RecordNotFoundException {
             service.saveRoleAndUserInUserRoleTable(userRoleDto.username(), userRoleDto.roleNames());
-            return new ResponseEntity<>("roles are assign to the user ", HttpStatus.CREATED);
-
-        }catch (RecordNotFoundException exception){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND , "there is any user with this username");
-        }
-
-
     }
 
     @GetMapping("/get/RoleName/{userId}")
     @ResponseBody
+    @ResponseStatus( HttpStatus.OK)
     @Secured("ROLE_GET_ROLE")
     public List<GetRoleDto> getRolesOfUser(@PathVariable Integer userId) {
         var roleNames = service.getRolesByUserId(userId);
-
-        if (roleNames.isEmpty()) {
-            Logger.getLogger(UserRoleController.class.getName())
-                    .info(" user have any role ! ");
-        }
-
         return roleNames.stream().map(GetRoleDto::generateCustomGetRoleDto).collect(Collectors.toList());
-
     }
 }

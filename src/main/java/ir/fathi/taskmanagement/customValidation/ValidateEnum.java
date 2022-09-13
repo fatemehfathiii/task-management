@@ -6,10 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = MobileNumberValidator.class)
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface MobileNumber {
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = EnumValidator.class)
+public @interface ValidateEnum
+{
 
-    String massage() default "mobile number is invalid" ;
+    String message() default "";
+    Class< ? extends Enum<?>> targetClassType();
+
 }
