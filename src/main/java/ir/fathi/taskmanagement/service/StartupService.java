@@ -1,6 +1,6 @@
 package ir.fathi.taskmanagement.service;
 
-import ir.fathi.taskmanagement.dto.PostUserDto;
+import ir.fathi.taskmanagement.config.StartupApplicationListener;
 import ir.fathi.taskmanagement.model.Role;
 import ir.fathi.taskmanagement.model.User;
 import ir.fathi.taskmanagement.repository.RoleRepository;
@@ -26,21 +26,36 @@ public class StartupService {
 
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void saveAllRole() {
-        roleRepository.saveAll(generateRole());
-        Logger.getLogger(StartupService.class.getName()).info("all the rolls are placed in role table . ");
+    public void rollAndUserAdminProvider() {
+
+        try{
+
+            roleRepository.saveAll(generateRole());
+            Logger.getLogger(StartupService.class.getName()).info("all the rolls are placed in role table.");
+
+        }catch (Exception ignored){
+            Logger.getLogger(StartupApplicationListener.class.getName()).info("all the rolls are placed in role table.");
+        }
+
+
+        try{
+            makeUserAdmin();
+
+        }catch (Exception exception){
+
+            exception.getCause();
+            exception.printStackTrace();
+        }
+
     }
 
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void makeUserAdmin(){
+    private void makeUserAdmin(){
         if (!userService.isExistsUsername("administrator")) {
-
-            PostUserDto postUserDto=new PostUserDto("administrator","user_admin","ADMIN","ADMIN","NATIONAL_CODE" );
-            var user_admin = User.fromDto(postUserDto, passwordEncoder.encode("user_admin"));
-            userRepository.save(user_admin);
+            var userAdmin = User.generateUserAdmin(passwordEncoder.encode("userAdminPassword"));
+            userRepository.save(userAdmin);
             List<Role> allRoll = (List<Role>) roleRepository.findAll();
-            userRoleService.saveRoleAndUserInUserRoleTable(user_admin, allRoll);
+            userRoleService.saveRoleAndUserInUserRoleTable(userAdmin, allRoll);
 
             Logger.getLogger(StartupService.class.getName()).info("user_amin is placed in user table. ");
         }

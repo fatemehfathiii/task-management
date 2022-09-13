@@ -17,8 +17,7 @@ import java.util.Arrays;
 public class MethodLoggerAspect {
     Logger logger = LoggerFactory.getLogger(MethodLoggerAspect.class);
 
-    @AfterThrowing(value = "allOverTheApp() && !(exceptForTheController()) && !(exceptForTheAspectPackage())"
-            , throwing = "exception")
+    @AfterThrowing(value = "execution(* ir.fathi.taskmanagement.*.*.*(..))", throwing = "exception")
 
     public void exceptionDetailLog(JoinPoint joinPoint, Throwable exception) {
         var info = String.format(
@@ -56,13 +55,4 @@ public class MethodLoggerAspect {
         return result;
     }
 
-
-    @Pointcut(value = "execution(* ir.fathi.taskmanagement.*.*.*(..))")
-    private void allOverTheApp(){}
-
-    @Pointcut(value = "execution(* ir.fathi.taskmanagement.controller.*.*(..))")
-    private void exceptForTheController(){}
-
-    @Pointcut(value = "execution(* ir.fathi.taskmanagement.config.aspect.*.*(..))")
-    private void exceptForTheAspectPackage(){}
 }

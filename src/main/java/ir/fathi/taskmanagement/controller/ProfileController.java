@@ -36,7 +36,7 @@ public class ProfileController {
 
         var updatedProfile=service.updateProfile(profileDto.name(), profileDto.lastname(), profileDto.nationalCode(),
                 profileDto.sex(), profileDto.birthday() , profileDto.mobileNumber(), profileDto.email());
-        return ResponseEntity.ok().body(updatedProfile+"record updated .");
+        return ResponseEntity.ok().body(updatedProfile + "record updated .");
     }
 
 }

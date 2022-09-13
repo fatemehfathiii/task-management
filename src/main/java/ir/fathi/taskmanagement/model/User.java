@@ -40,6 +40,14 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Task> task;
 
+    public User() {
+        this.username = username;
+        this.password = password;
+        profile.setName("admin");
+        profile.setLastname("admin");
+        profile.setNationalCode("adminNationalCode");
+        this.profile = profile;
+    }
 
     public static User fromDto(PostUserDto postUserDto , String encodePassword) {
         User user = new User();
@@ -52,6 +60,17 @@ public class User implements UserDetails {
         user.setProfile(profile);
         return user;
     }
+
+    public static User generateUserAdmin(String password){
+        User user = new User();
+        Profile profile = new Profile();
+        user.setUsername("administrator");
+        user.setPassword(password);
+        user.setProfile(profile);
+        return user;
+    }
+
+
 
 
     @Override

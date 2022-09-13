@@ -32,6 +32,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
+    @MethodDurationLog
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody @Valid PostUserDto postUserDto) throws RecordNotFoundException {
         saveUserService.save(User.fromDto(postUserDto, passwordEncoder.encode(postUserDto.password())));
@@ -62,7 +63,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_USER")
     @ResponseBody
-    public List<String> getUserWhoHasIncompleteTask() {
+    public List<String> getUsersWhoHaveIncompleteTask() {
         return userService.getUserWhoHasIncompleteTask();
     }
 

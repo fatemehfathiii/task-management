@@ -49,11 +49,11 @@ public class TaskService {
         return taskRepository.findTaskByOwner_UsernameAndDoneIsNull(username);
     }
 
-    public List<Task> getCompleteTaskByUsername(String username){
+    public List<Task> getCompletedTaskByUsername(String username){
         return taskRepository.findTaskByOwner_UsernameAndDoneIsNotnull(username);
     }
 
-    public List<Task> getTodayCompleteTask(String username){
+    public List<Task> getTodayCompletedTask(String username){
         return  taskRepository.findTaskByOwner_UsernameAndDoneToday(username);
     }
 

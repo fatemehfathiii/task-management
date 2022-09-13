@@ -22,6 +22,4 @@ public class CustomBeans {
         return new SecureRandom();
     }
 
-
-
 }

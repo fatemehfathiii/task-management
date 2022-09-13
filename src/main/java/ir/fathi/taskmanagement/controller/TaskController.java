@@ -33,6 +33,7 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @MethodDurationLog
     @Secured("ROLE_ADD_TASK")
     public void save(@RequestBody @Valid PostTaskDto taskDto) throws RecordNotFoundException {
             service.save(Task.fromDto(taskDto) , taskDto.username());
@@ -81,8 +82,8 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_TASK")
     @ResponseBody
-    public List<GetTaskDto> getCompleteTaskByUsername(){
-        return service.getCompleteTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
+    public List<GetTaskDto> getCompletedTaskByUsername(){
+        return service.getCompletedTaskByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).stream()
                 .map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
@@ -91,8 +92,8 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_GET_TASK")
     @ResponseBody
-    public List<GetTaskDto> getTodayCompleteTask(){
-        return service.getTodayCompleteTask(SecurityContextHolder.getContext().getAuthentication().getName())
+    public List<GetTaskDto> getTodayCompletedTask(){
+        return service.getTodayCompletedTask(SecurityContextHolder.getContext().getAuthentication().getName())
                 .stream().map(GetTaskDto::generateCustomGetTaskDto).collect(Collectors.toList());
     }
 
