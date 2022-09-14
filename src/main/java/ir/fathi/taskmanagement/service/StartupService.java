@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -38,27 +39,30 @@ public class StartupService {
         }
 
 
-        try{
+        try {
+
             makeUserAdmin();
 
         }catch (Exception exception){
 
-            exception.getCause();
             exception.printStackTrace();
+            exception.getCause();
         }
+
 
     }
 
+    @Transactional(propagation = Propagation.REQUIRED , isolation = Isolation.READ_COMMITTED)
+    public void makeUserAdmin(){
 
-    private void makeUserAdmin(){
-        if (!userService.isExistsUsername("administrator")) {
-            var userAdmin = User.generateUserAdmin(passwordEncoder.encode("userAdminPassword"));
-            userRepository.save(userAdmin);
-            List<Role> allRoll = (List<Role>) roleRepository.findAll();
-            userRoleService.saveRoleAndUserInUserRoleTable(userAdmin, allRoll);
+            if (!userService.isExistsUsername("administrator")) {
+                var userAdmin = User.generateUserAdmin(passwordEncoder.encode("userAdminPassword"));
+                userRepository.save(userAdmin);
+                List<Role> allRoll = (List<Role>) roleRepository.findAll();
+                userRoleService.saveRoleAndUserInUserRoleTable(userAdmin, allRoll);
 
-            Logger.getLogger(StartupService.class.getName()).info("user_amin is placed in user table. ");
-        }
+                Logger.getLogger(StartupService.class.getName()).info("user_amin is placed in user table. ");
+            }
     }
 
 
